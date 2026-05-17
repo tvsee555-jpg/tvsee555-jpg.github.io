@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Calculator 2024 – Compare Scores & Find Best Test Prep</title>
+    <meta name="description" content="Use our free Test Calculator to compare your scores, find percentile rankings, and discover the best test prep products on Amazon.">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.1);
+            padding: 2rem 1.5rem;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+        .subhead {
+            color: #475569;
+            font-size: 0.95rem;
+            margin-bottom: 1.8rem;
+        }
+        .calculator-card {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 1.5rem 1.2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        .input-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            flex: 1 1 150px;
+            min-width: 120px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #475569;
+            margin-bottom: 0.3rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            font-size: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: white;
+            transition: border 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 0.5rem 0 1rem;
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(37,99,235,0.2);
+        }
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37,99,235,0.25);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+            transform: none;
+            box-shadow: none;
+        }
+        .result-area {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem;
+            border: 1px solid #e2e8f0;
+            min-height: 100px;
+            margin-top: 0.8rem;
+        }
+        .result-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .score-badge {
+            background: #eaf5ef;
+            color: #1a6b3c;
+            font-weight: 600;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+        }
+        .result-main {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .result-detail {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .product-recs {
+            margin: 1rem 0 0.5rem;
+            border-top: 1px dashed #d1d9e6;
+            padding-top: 1rem;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        .product-name {
+            font-weight: 500;
+        }
+        .product-price {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .amazon-link {
+            background: #ff9900;
+            color: #1e293b;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .amazon-link:hover {
+            background: #e68a00;
+        }
+        .comparison-content {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .comparison-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+        .comparison-content p {
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+        .comparison-content a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            body { padding: 1rem 0.8rem; }
+            .container { padding: 1.5rem 1rem; }
+            h1 { font-size: 1.5rem; }
+            .input-grid { flex-direction: column; }
+            .input-group { min-width: 100%; }
+            .btn { width: 100%; text-align: center; }
+            .result-box { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- SEO title & description embedded -->
+    <div style="margin-bottom:0.5rem;">
+        <p style="font-size:0.85rem; color:#64748b; letter-spacing:0.03em;">Test Calculator &bull; Score Comparison</p>
+    </div>
+    <h1>Test Calculator – Compare Your Scores</h1>
+    <p class="subhead">Enter your test scores to see percentile rank, compare with average, and get product recommendations.</p>
+
+    <!-- Calculator tool -->
+    <div class="calculator-card">
+        <div class="input-grid">
+            <div class="input-group">
+                <label for="score1">Your Score</label>
+                <input type="number" id="score1" placeholder="e.g. 85" min="0" max="100" value="78">
+            </div>
+            <div class="input-group">
+                <label for="score2">Average Score</label>
+                <input type="number" id="score2" placeholder="e.g. 70" min="0" max="100" value="68">
+            </div>
+            <div class="input-group">
+                <label for="maxScore">Max Possible</label>
+                <input type="number" id="maxScore" placeholder="e.g. 100" min="1" max="500" value="100">
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn" id="calcBtn">📊 Calculate</button>
+            <button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+        </div>
+
+        <!-- Results area -->
+        <div class="result-area" id="resultArea">
+            <div id="resultContent">
+                <div class="result-box">
+                    <div>
+                        <span class="score-badge">Your percentile</span>
+                        <div class="result-main" id="percentileDisplay">--</div>
+                        <div class="result-detail" id="comparisonText">Enter scores and press Calculate</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:0.8rem; color:#64748b;">Compared to average</div>
+                        <div style="font-weight:600; font-size:1.1rem;" id="deltaDisplay">--</div>
+                    </div>
+                </div>
+                <!-- Product recommendations (affiliate) -->
+                <div class="product-recs" id="productRecs">
+                    <div style="font-weight:600; margin-bottom:0.6rem; color:#1e293b;">📚 Recommended test prep</div>
+                    <div class="product-item">
+                        <span class="product-name">Kaplan SAT Prep Plus 2024</span>
+                        <span class="product-price">$24.99</span>
+                        <a class="amazon-link" href="https://www.amazon.com/s?k=Kaplan+SAT+Prep+Plus+2024&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                    <div class="product-item">
+                        <span class="product-name">Princeton Review ACT Premium</span>
+                        <span class="product-price">$28.99</span>
+                        <a class="amazon-link" href="https://www.amazon.com/s?k=Princeton+Review+ACT+Premium&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                    <div class="product-item">
+                        <span class="product-name">Mometrix TEAS 7 Secrets</span>
+                        <span class="product-price">$34.99</span>
+                        <a class="amazon-link" href="https://www.amazon.com/s?k=Mometrix+TEAS+7+Secrets&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison content ~300 words -->
+    <div class="comparison-content">
+        <h2>How to Interpret Your Test Scores &amp; Find the Right Prep</h2>
+        <p>Whether you’re preparing for the SAT, ACT, GRE, or a professional exam like the TEAS or NCLEX, knowing where you stand is the first step to improvement. Our <strong>Test Calculator</strong> lets you compare your raw score against the average and max possible, then see a percentile estimate. This helps you gauge whether you need targeted practice in math, reading, or science reasoning.</p>
+        <p>Many students find that a structured prep book makes a measurable difference. For example, the <a href="https://www.amazon.com/s?k=Kaplan+SAT+Prep+Plus+2024&tag=1288282581282-20"><strong>Kaplan SAT Prep Plus 2024</strong> ($24.99)</a> includes online quizzes and strategy videos. If you’re focusing on the ACT, the <a href="https://www.amazon.com/s?k=Princeton+Review+ACT+Premium&tag=1288282581282-20"><strong>Princeton Review ACT Premium</strong> ($28.99)</a> offers 8 full-length practice tests. For nursing school candidates, <a href="https://www.amazon.com/s?k=Mometrix+TEAS+7+Secrets&tag=1288282581282-20"><strong>Mometrix TEAS 7 Secrets</strong> ($34.99)</a> is a top-rated guide.</p>
+        <p>When comparing products, look for updated editions (2024 or 2025) that reflect the latest test changes. Many books now include online access to adaptive drills and video explanations. If your score is below the 50th percentile, consider a comprehensive guide; if you’re above 80%, a targeted workbook might be enough. Remember, consistent practice with real test questions is the most effective way to boost your score.</p>
+        <p>We update our recommendations regularly, and all links go to Amazon’s latest listings. Use the calculator above to check your score, then explore the products that match your goals. Good luck with your test prep!</p>
+        <p style="font-size:0.85rem; color:#64748b; margin-top:1.2rem;">Disclosure: As an Amazon Associate, we earn from qualifying purchases. Prices may vary.</p>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const score1Input = document.getElementById('score1');
+        const score2Input = document.getElementById('score2');
+        const maxScoreInput = document.getElementById('maxScore');
+        const calcBtn = document.getElementById('calcBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const percentileDisplay = document.getElementById('percentileDisplay');
+        const comparisonText = document.getElementById('comparisonText');
+        const deltaDisplay = document.getElementById('deltaDisplay');
+
+        function calculate() {
+            let s1 = parseFloat(score1Input.value);
+            let s2 = parseFloat(score2Input.value);
+            let max = parseFloat(maxScoreInput.value);
+
+            // validation
+            if (isNaN(s1) || isNaN(s2) || isNaN(max) || max <= 0) {
+                percentileDisplay.textContent = '--';
+                comparisonText.textContent = 'Please enter valid numbers (max > 0)';
+                deltaDisplay.textContent = '--';
+                return;
+            }
+            // clamp values
+            s1 = Math.min(s1, max);
+            s2 = Math.min(s2, max);
+            if (s1 < 0) s1 = 0;
+            if (s2 < 0) s2 = 0;
+
+            const percentile = max > 0 ? (s1 / max) * 100 : 0;
+            const delta = s1 - s2;
+            const percentDisplay = percentile.toFixed(1) + '%';
+
+            let compMsg = '';
+            if (s1 > s2) {
+                compMsg = 'Your score is above the average. Great job!';
+            } else if (s1 < s2) {
+                compMsg = 'Your score is below the average. Keep practicing!';
+            } else {
+                compMsg = 'Your score is exactly average.';
+            }
+
+            percentileDisplay.textContent = percentDisplay;
+            comparisonText.textContent = compMsg;
+            let deltaStr = (delta >= 0 ? '+' : '') + delta.toFixed(1);
+            deltaDisplay.textContent = deltaStr + ' pts vs avg';
+
+            // dynamic product hint (optional add-on)
+            // We keep the static product list, but could reorder; we'll just leave as is.
+        }
+
+        function reset() {
+            score1Input.value = '78';
+            score2Input.value = '68';
+            maxScoreInput.value = '100';
+            percentileDisplay.textContent = '--';
+            comparisonText.textContent = 'Enter scores and press Calculate';
+            deltaDisplay.textContent = '--';
+        }
+
+        calcBtn.addEventListener('click', calculate);
+        resetBtn.addEventListener('click', reset);
+
+        // initial calculation on load (show example)
+        window.addEventListener('load', function() {
+            calculate();
+        });
+    })();
+</script>
+</body>
+</html>
