@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tvsee555-jpg.github.io/sitemap.xml
