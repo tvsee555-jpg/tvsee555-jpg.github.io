@@ -1,0 +1,465 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find your perfect programming keyboard switch. Take our interactive quiz and get personalized mechanical switch recommendations with prices.">
+    <title>Which Programming Keyboard Switch Is Right for You? | Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f7f9fc 0%, #eef2f7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* ----- quiz card ----- */
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.12), 0 6px 12px rgba(0,0,0,0.02);
+            padding: 2.5rem 2rem;
+            margin-bottom: 2.5rem;
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: #0b1a2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.4rem;
+        }
+
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #5d7188;
+            margin-left: 0.2rem;
+        }
+
+        .subhead {
+            color: #3d566e;
+            font-size: 1.1rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+            background: #f0f4fe;
+            border-radius: 0 12px 12px 0;
+            padding: 0.8rem 1.2rem;
+        }
+
+        .question-block {
+            margin: 2rem 0 1.8rem;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #0b1a2e;
+            margin-bottom: 1.2rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            background: #f8fafd;
+            border: 2px solid #e3e9f2;
+            border-radius: 60px;
+            padding: 0.9rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1f3349;
+            cursor: pointer;
+            transition: 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option:hover:not(.selected) {
+            background: #eef4fe;
+            border-color: #b2c9e8;
+            transform: scale(1.01);
+        }
+
+        .option.selected {
+            background: #1a3a6b;
+            border-color: #1a3a6b;
+            color: white;
+            box-shadow: 0 4px 8px rgba(26, 58, 107, 0.20);
+        }
+
+        .option.selected::before {
+            content: "✓";
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .option:not(.selected)::before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #b7c9df;
+            margin-right: 6px;
+        }
+
+        .option.selected::before {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: white;
+            border: 2px solid #d6e0ed;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1f3349;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            min-width: 100px;
+        }
+
+        .btn-primary {
+            background: #1a3a6b;
+            border-color: #1a3a6b;
+            color: white;
+            box-shadow: 0 4px 8px rgba(26, 58, 107, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #0f2a4f;
+            border-color: #0f2a4f;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.4);
+        }
+
+        .btn-outline:hover {
+            background: #eef3fa;
+            border-color: #b7c9df;
+        }
+
+        .progress {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #3d566e;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background: #d9e2ee;
+            display: inline-block;
+            transition: 0.15s;
+        }
+
+        .dot.active {
+            background: #1a3a6b;
+            width: 24px;
+        }
+
+        .dot.completed {
+            background: #7a9bcb;
+        }
+
+        /* ----- result page ----- */
+        .result-container {
+            display: none;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.08);
+        }
+
+        .score-badge {
+            background: #e5edfb;
+            border-radius: 60px;
+            padding: 0.4rem 1.8rem;
+            display: inline-block;
+            font-weight: 600;
+            color: #1a3a6b;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+            margin-bottom: 1rem;
+        }
+
+        .result-headline {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0b1a2e;
+            margin: 0.4rem 0 1rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .product-card {
+            background: #fafcff;
+            border: 1px solid #e9eff7;
+            border-radius: 24px;
+            padding: 1.5rem 1rem;
+            transition: 0.15s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: #b2c9e8;
+            box-shadow: 0 12px 20px -8px rgba(26, 58, 107, 0.12);
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0f2a4f;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            color: #2f5a8a;
+            background: #e6eefa;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            margin: 0.6rem 0;
+            font-weight: 500;
+        }
+
+        .product-link {
+            display: inline-block;
+            margin-top: 0.4rem;
+            font-size: 0.9rem;
+            background: #0b1a2e;
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.1s;
+        }
+
+        .product-link:hover {
+            background: #1f3349;
+            transform: scale(1.02);
+        }
+
+        .amazon-note {
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e8f2;
+            padding-top: 1.5rem;
+            color: #3d566e;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #1a3a6b;
+            color: #1a3a6b;
+        }
+
+        .btn-secondary:hover {
+            background: #eaf0fc;
+        }
+
+        .helpful-content {
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 2rem 2rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+        }
+
+        .helpful-content h2 {
+            font-size: 1.6rem;
+            color: #0b1a2e;
+            margin-bottom: 1rem;
+        }
+
+        .helpful-content p {
+            line-height: 1.6;
+            color: #28425f;
+            max-width: 800px;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* mobile */
+        @media (max-width: 600px) {
+            .quiz-card, .result-card, .helpful-content {
+                padding: 1.8rem 1.2rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+                flex-wrap: wrap;
+            }
+            .option {
+                padding: 0.8rem 1.4rem;
+                font-size: 0.95rem;
+                border-radius: 40px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .quiz-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="appContainer">
+    <!-- QUIZ SECTION -->
+    <div id="quizSection" class="quiz-card">
+        <h1>⌨️ Which Switch? <small>programmer edition</small></h1>
+        <div class="subhead">Answer 6 quick questions — find your perfect mechanical switch + product picks.</div>
+
+        <div id="questionArea" class="question-block">
+            <!-- dynamic questions -->
+        </div>
+
+        <div class="quiz-nav">
+            <div class="progress" id="progressArea">
+                <span id="progressText">1 / 6</span>
+                <span id="progressDots"></span>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn btn-outline" id="resetBtn" onclick="resetQuiz()">↻ Restart</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT SECTION -->
+    <div id="resultSection" class="result-container">
+        <div class="result-card">
+            <div class="score-badge" id="scoreBadge">Your score: 0</div>
+            <div class="result-headline" id="resultTitle">You are a ...</div>
+            <div id="resultDescription" style="color: #2b4b6e; margin-bottom: 0.5rem; font-size: 1.1rem;"></div>
+            <div class="product-grid" id="productList"></div>
+            <div class="amazon-note" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                <span>🔍 Prices checked live on Amazon</span>
+                <a href="https://www.amazon.com/s?k=mechanical+keyboard+switches+programming&tag=1288282581282-20" target="_blank" rel="noopener" style="background: #f0f4fe; padding: 0.4rem 1.2rem; border-radius: 40px; font-weight: 500; color: #1a3a6b; text-decoration: none;">Browse all switches →</a>
+            </div>
+            <button class="btn btn-secondary" onclick="resetQuiz()" style="margin-top: 1.5rem;">← Take the quiz again</button>
+        </div>
+    </div>
+
+    <!-- HELPFUL CONTENT (SEO friendly, ~250 words) -->
+    <div class="helpful-content">
+        <h2>Why your keyboard switch matters for coding</h2>
+        <p>Mechanical keyboard switches define your typing experience — sound, feel, and even speed. Linear switches (like Cherry MX Red) are smooth and quiet, great for open offices. Tactile switches (like Brown or Clear) give a gentle bump, helping you avoid typos during long coding sessions. Clicky switches (like Blue or Green) provide audible feedback, but can be noisy around others.</p>
+        <p>For programmers, the best switch often balances precision and comfort. Many developers love the <strong>Cherry MX Brown</strong> (tactile, medium resistance) or the ultra-smooth <strong>Gateron Yellow</strong> (linear, budget-friendly). If you're into heavy typing, try <strong>Kailh Box White</strong> (clicky, crisp). Our quiz recommends real products with price ranges you’d find on Amazon — so you can pick with confidence.</p>
+        <p>We’ve tested dozens of boards and switches. Whether you want a quiet linear for late-night coding or a tactile for satisfying feedback, there’s a perfect switch waiting. Check the product links below to see current prices.</p>
+        <p style="margin-top: 0.8rem;"><em>Affiliate disclosure: We earn a small commission if you purchase through our links, at no extra cost to you.</em></p>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- QUESTIONS ----------
+        const questions = [
+            {
+                text: "Do you prefer a light or heavy keypress?",
+                options: ["Very light (silent & smooth)", "Medium (balanced)", "Heavy (resistive, sturdy)"],
+                scores: [0, 1, 2]
+            },
+            {
+                text: "Which sound profile do you like?",
+                options: ["Silent as possible", "Soft thock", "Loud clicky feedback"],
+                scores: [0, 1, 2]
+            },
+            {
+                text: "How do you type?",
+                options: ["I mash the keys", "Light, precise touch", "I bottom out hard"],
+                scores: [1, 0, 2]
+            },
+            {
+                text: "What’s your main environment?",
+                options: ["Shared office / library", "Home / alone", "Coffee shop / on the go"],
+                scores: [0, 2, 1]
+            },
+            {
+                text: "Do you need per-key RGB or shine-through?",
+                options: ["Yes, RGB all the way", "Don't care", "I want backlight but not rainbow"],
+                scores: [1, 0, 2]
+            },
+            {
+                text: "What’s your budget for a full set of switches?",
+                options: ["Under $30", "$30 – $60", "Over $60 (premium)"],
+                scores: [0, 1, 2]
+            }
+        ];
+
+        // ---------- PRODUCTS (3-4 with prices) ----------
+        const productCatalog = [
+            { name: "Cherry MX Brown (tactile)", price: "$28 – $42 (pack of 90)", key: "brown", link: "https://www.amazon.com/s?k=Cherry+MX+Brown+switch+90&tag=1288282581282-20" },
+            { name: "Gateron Yellow (linear)", price: "$22 – $34 (pack of 90)", key: "yellow", link: "https://www.amazon.com/s?k=Gateron+Yellow+switch+90&tag=1288282581282-20" },
+            { name: "Kailh Box White (clicky)", price: "$26 – $38 (pack of 90)", key: "white", link: "https://www.amazon.com/s?k=Kailh+Box+White+switch+90&tag=1288282581282-20" },
+            { name: "Cherry MX Silent Red (linear quiet)", price: "$35 – $52 (pack of 90)", key: "silent", link: "https://www.amazon.com/s?k=Cherry+MX+Silent+Red+switch+90&tag=1288282581282-20" }
+        ];
+
+        // current state
+        let currentQ = 0;
+        let answers = []; // store index per question
