@@ -1,0 +1,433 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4K vs Ultrawide for Coding · Monitor comparison 2025</title>
+  <meta name="description" content="Compare 7 top monitors for developers: 4K vs Ultrawide. Detailed specs, ratings, pricing & best-for labels. Find your perfect coding monitor." />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 2rem 1.5rem;
+      color: #0b1e33;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* header & intro */
+    .header {
+      margin-bottom: 2.5rem;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, #0b2b4b, #1f4e7a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #1f3a57;
+      max-width: 880px;
+      margin-bottom: 0.75rem;
+    }
+
+    .comparison-content {
+      background: #eef3f9;
+      padding: 1.2rem 1.5rem;
+      border-radius: 1.5rem;
+      margin: 1.2rem 0 2rem 0;
+      border-left: 4px solid #2c6a9e;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: #0a1d30;
+    }
+
+    .comparison-content strong {
+      color: #104b7a;
+    }
+
+    /* controls */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.8rem;
+      align-items: center;
+      margin: 1.8rem 0 2rem 0;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 20, 40, 0.05);
+    }
+
+    .controls label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
+      color: #1f4970;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .controls select, .controls input {
+      font-size: 0.95rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid #d3dfeb;
+      border-radius: 40px;
+      background: white;
+      font-weight: 400;
+      color: #0a1f36;
+      cursor: pointer;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .controls select:focus, .controls input:focus {
+      border-color: #2570b7;
+      box-shadow: 0 0 0 3px rgba(37, 112, 183, 0.15);
+    }
+
+    .controls input::placeholder {
+      color: #8ba1bb;
+    }
+
+    .filter-badge {
+      background: #e5eef8;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      color: #10466e;
+      margin-left: 0.2rem;
+    }
+
+    /* grid / table : card style */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 1.8rem;
+      box-shadow: 0 8px 24px rgba(0, 24, 48, 0.06);
+      padding: 1.8rem 1.5rem 2rem;
+      transition: transform 0.15s ease, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #eef3f9;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(18, 52, 88, 0.10);
+    }
+
+    .product-name {
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #0b263f;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+
+    .best-badge {
+      display: inline-block;
+      background: #d3e3f5;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      color: #0e3f66;
+      margin: 0.5rem 0 0.8rem 0;
+      text-transform: uppercase;
+      border: 1px solid #b6cde0;
+    }
+
+    .spec-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #e9f0f7;
+      font-size: 0.9rem;
+    }
+
+    .spec-label {
+      color: #4b627e;
+    }
+
+    .spec-value {
+      font-weight: 500;
+      color: #08243b;
+    }
+
+    .rating {
+      margin: 0.9rem 0 0.4rem 0;
+      font-weight: 500;
+      color: #1f466b;
+    }
+
+    .rating span {
+      background: #f1e9d8;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      font-weight: 650;
+      margin: 0.7rem 0 0.85rem 0;
+      color: #0a2b47;
+    }
+
+    .price small {
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #456b89;
+      margin-left: 0.3rem;
+    }
+
+    .amazon-btn {
+      display: inline-block;
+      background: #ffb83b;
+      background: linear-gradient(145deg, #ffae2a, #ffc85c);
+      color: #0b1f30;
+      font-weight: 600;
+      padding: 0.8rem 1rem;
+      border-radius: 60px;
+      text-align: center;
+      text-decoration: none;
+      transition: 0.2s;
+      margin-top: auto;
+      border: 1px solid #f0b843;
+      box-shadow: 0 2px 6px rgba(255, 150, 0, 0.2);
+      font-size: 0.95rem;
+    }
+
+    .amazon-btn:hover {
+      background: #ffa81c;
+      background: linear-gradient(145deg, #f9a31a, #ffbe4a);
+      transform: scale(1.01);
+      box-shadow: 0 6px 14px rgba(210, 130, 0, 0.3);
+    }
+
+    .no-match {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 0;
+      color: #386489;
+      background: #e9f0fa;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      border-top: 1px solid #dde6f0;
+      padding-top: 1.4rem;
+      text-align: center;
+      color: #2b5275;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 1.2rem 0.8rem; }
+      .header h1 { font-size: 1.8rem; }
+      .controls { flex-direction: column; align-items: stretch; border-radius: 1.5rem; }
+      .controls label { flex-wrap: wrap; }
+      .product-grid { gap: 1.2rem; }
+      .product-card { padding: 1.2rem; }
+      .best-badge { font-size: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🖥️ 4K vs Ultrawide for coding</h1>
+      <p>Which screen real estate wins for developers? We compared 7 top monitors — from sharp 4K panels to immersive ultrawides — for code, terminals, and side‑by‑side windows.</p>
+      <div class="comparison-content">
+        <strong>⚡ Quick summary:</strong> For pixel-dense text and crisp syntax highlighting, 4K monitors like the <strong>Dell U2723QE</strong> or <strong>LG 27UP850N</strong> shine. Ultrawides (<strong>LG 34WN80C-B</strong>, <strong>Dell U3824DW</strong>) give you extra horizontal space for split editors. <strong>Apple Studio Display</strong> offers best-in-class Retina, while <strong>Samsung Odyssey G9</strong> (dual 4K horizontal) is the ultimate multitool. For pure coding on a budget, <strong>Gigabyte M28U</strong> delivers 4K at a steal.
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div class="controls">
+      <label>🔽 Sort by 
+        <select id="sortSelect">
+          <option value="default">Default order</option>
+          <option value="priceLow">Price: low → high</option>
+          <option value="priceHigh">Price: high → low</option>
+          <option value="rating">Rating (high → low)</option>
+        </select>
+      </label>
+      <label>🏷️ Filter 
+        <select id="filterSelect">
+          <option value="all">All monitors</option>
+          <option value="4k">4K / Retina</option>
+          <option value="ultrawide">Ultrawide</option>
+          <option value="budget">Budget (≤ $700)</option>
+        </select>
+      </label>
+      <label>🔍 Search 
+        <input type="text" id="searchInput" placeholder="name, brand..." />
+      </label>
+    </div>
+
+    <!-- product grid injected from JS -->
+    <div id="productContainer" class="product-grid"></div>
+    <footer>
+      <p>Prices and availability may vary. Affiliate links (Amazon) help support this comparison. <br/>© 2025 Monitor dev guide</p>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- product database ----------
+      const products = [
+        {
+          id: 1,
+          name: "Dell U2723QE",
+          short: "Dell U2723QE",
+          type: "4k",
+          bestFor: "Best 4K for devs",
+          specs: { size: "27″", resolution: "3840×2160 (4K)", panel: "IPS Black", refresh: "60Hz", ports: "USB-C 90W" },
+          rating: 4.7,
+          priceRange: "$589 – $659",
+          priceValue: 619,
+          amazonLink: "https://www.amazon.com/s?k=Dell+U2723QE+4K+monitor+coding&tag=1288282581282-20"
+        },
+        {
+          id: 2,
+          name: "LG 27UP850N",
+          short: "LG 27UP850N",
+          type: "4k",
+          bestFor: "Best value 4K",
+          specs: { size: "27″", resolution: "3840×2160", panel: "IPS", refresh: "60Hz", ports: "USB-C 96W" },
+          rating: 4.5,
+          priceRange: "$449 – $529",
+          priceValue: 479,
+          amazonLink: "https://www.amazon.com/s?k=LG+27UP850N+4K+monitor&tag=1288282581282-20"
+        },
+        {
+          id: 3,
+          name: "Apple Studio Display",
+          short: "Apple Studio Display",
+          type: "4k",
+          bestFor: "Retina / macOS",
+          specs: { size: "27″", resolution: "5120×2880 (5K)", panel: "IPS", refresh: "60Hz", ports: "USB-C 96W" },
+          rating: 4.8,
+          priceRange: "$1,599 – $1,899",
+          priceValue: 1699,
+          amazonLink: "https://www.amazon.com/s?k=Apple+Studio+Display+monitor&tag=1288282581282-20"
+        },
+        {
+          id: 4,
+          name: "LG 34WN80C-B",
+          short: "LG 34WN80C-B",
+          type: "ultrawide",
+          bestFor: "Ultrawide value",
+          specs: { size: "34″ UW", resolution: "3440×1440", panel: "IPS", refresh: "60Hz", ports: "USB-C 60W" },
+          rating: 4.4,
+          priceRange: "$579 – $699",
+          priceValue: 649,
+          amazonLink: "https://www.amazon.com/s?k=LG+34WN80C-B+ultrawide&tag=1288282581282-20"
+        },
+        {
+          id: 5,
+          name: "Dell U3824DW",
+          short: "Dell U3824DW",
+          type: "ultrawide",
+          bestFor: "Premium ultrawide",
+          specs: { size: "38″ UW", resolution: "3840×1600", panel: "IPS Black", refresh: "60Hz", ports: "USB-C 90W" },
+          rating: 4.6,
+          priceRange: "$1,049 – $1,199",
+          priceValue: 1129,
+          amazonLink: "https://www.amazon.com/s?k=Dell+U3824DW+ultrawide+monitor&tag=1288282581282-20"
+        },
+        {
+          id: 6,
+          name: "Samsung Odyssey G9",
+          short: "Samsung G9",
+          type: "ultrawide",
+          bestFor: "Ultra immersive",
+          specs: { size: "49″ DQHD", resolution: "5120×1440", panel: "VA", refresh: "240Hz", ports: "2x HDMI, DP" },
+          rating: 4.3,
+          priceRange: "$1,199 – $1,499",
+          priceValue: 1349,
+          amazonLink: "https://www.amazon.com/s?k=Samsung+Odyssey+G9+monitor&tag=1288282581282-20"
+        },
+        {
+          id: 7,
+          name: "Gigabyte M28U",
+          short: "Gigabyte M28U",
+          type: "4k",
+          bestFor: "Budget 4K 144Hz",
+          specs: { size: "28″", resolution: "3840×2160", panel: "IPS", refresh: "144Hz", ports: "USB-C 15W" },
+          rating: 4.5,
+          priceRange: "$549 – $649",
+          priceValue: 599,
+          amazonLink: "https://www.amazon.com/s?k=Gigabyte+M28U+4K+monitor&tag=1288282581282-20"
+        }
+      ];
+
+      // references
+      const container = document.getElementById('productContainer');
+      const sortSelect = document.getElementById('sortSelect');
+      const filterSelect = document.getElementById('filterSelect');
+      const searchInput = document.getElementById('searchInput');
+
+      // ----- helper: filter + sort + render -----
+      function render() {
+        const sortBy = sortSelect.value;
+        const filterBy = filterSelect.value;
+        const query = searchInput.value.trim().toLowerCase();
+
+        // deep copy
+        let filtered = products.slice();
+
+        // filter by type / budget
+        if (filterBy === '4k') {
+          filtered = filtered.filter(p => p.type === '4k');
+        } else if (filterBy === 'ultrawide') {
+          filtered = filtered.filter(p => p.type === 'ultrawide');
+        } else if (filterBy === 'budget') {
+          filtered = filtered.filter(p => p.priceValue <= 700);
+        }
+
+        // search filter (name, short, bestFor)
+        if (query) {
+          filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(query) ||
+            p.short.toLowerCase().includes(query) ||
+            p.bestFor.toLowerCase().includes(query) ||
+            (p.specs.resolution && p.specs.resolution.toLowerCase().includes(query))
+          );
+        }
+
+        // sorting
+        if (sortBy === 'priceLow') {
+          filtered.sort((a, b) => a.priceValue - b.priceValue);
+        } else if (sortBy === 'priceHigh') {
+          filtered.sort((a, b) => b.priceValue - a.priceValue);
+        } else
