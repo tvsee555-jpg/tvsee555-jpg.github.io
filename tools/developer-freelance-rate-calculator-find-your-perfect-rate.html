@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your ideal developer freelance rate based on experience, project type, and desired income. Compare tools and resources to boost your productivity.">
+    <title>Developer Freelance Rate Calculator | Find Your Perfect Rate</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            background: #f4f7fc;
+            color: #1a2639;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 30px 28px;
+            margin-bottom: 30px;
+            transition: all 0.2s ease;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0b1d3a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        h1 span {
+            background: linear-gradient(145deg, #2563eb, #0f4a9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subhead {
+            font-size: 1.05rem;
+            color: #4a5a6e;
+            margin-bottom: 25px;
+            border-left: 4px solid #2563eb;
+            padding-left: 16px;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 30px;
+        }
+        @media (max-width: 700px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #1e2a44;
+            font-size: 0.95rem;
+        }
+        .form-group input, .form-group select {
+            padding: 12px 16px;
+            border: 1.5px solid #dce2ec;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafbfe;
+            transition: border 0.2s;
+            width: 100%;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 10px;
+            letter-spacing: 0.3px;
+        }
+        .btn:hover {
+            background: #1a4fba;
+            transform: scale(1.01);
+            box-shadow: 0 8px 18px rgba(37,99,235,0.25);
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .result-area {
+            margin-top: 25px;
+            padding: 20px 0 0;
+            border-top: 2px dashed #e2e8f0;
+        }
+        .rate-big {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #2563eb;
+            line-height: 1;
+            display: inline-block;
+        }
+        .rate-label {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-left: 8px;
+        }
+        .breakdown {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 40px;
+            margin: 18px 0 12px;
+        }
+        .breakdown-item {
+            background: #f0f4fe;
+            border-radius: 14px;
+            padding: 12px 22px;
+            min-width: 120px;
+        }
+        .breakdown-item span {
+            display: block;
+        }
+        .breakdown-item .val {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #0b1d3a;
+        }
+        .breakdown-item .lbl {
+            font-size: 0.85rem;
+            color: #4a5a6e;
+        }
+        .affiliate-slot {
+            background: #f9fafc;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 20px;
+            border: 1px solid #e6edf6;
+        }
+        .affiliate-slot h3 {
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+            color: #0b1d3a;
+        }
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .product-item {
+            background: white;
+            padding: 10px 18px;
+            border-radius: 40px;
+            border: 1px solid #dce2ec;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .product-item a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .product-item a:hover {
+            text-decoration: underline;
+        }
+        .product-price {
+            background: #e6f0ff;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1c4b9e;
+        }
+        .content-section {
+            margin-top: 20px;
+        }
+        .content-section h2 {
+            font-size: 1.6rem;
+            color: #0b1d3a;
+            margin-bottom: 16px;
+        }
+        .content-section p {
+            margin-bottom: 18px;
+            color: #2c3e50;
+        }
+        .content-section .product-mention {
+            background: #f1f5fe;
+            padding: 4px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 0 3px;
+            font-weight: 500;
+        }
+        hr {
+            margin: 28px 0 10px;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #dce2ec, transparent);
+        }
+        .footer-note {
+            font-size: 0.85rem;
+            color: #5a6f82;
+            margin-top: 8px;
+        }
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px 16px;
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+            .rate-big {
+                font-size: 2.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>💻 <span>Freelance Rate Calculator</span></h1>
+        <div class="subhead">Set your rate with confidence — based on experience, project type, and income goals.</div>
+
+        <div class="calc-grid">
+            <div class="form-group">
+                <label for="experience">Years of experience</label>
+                <select id="experience">
+                    <option value="0.8">Junior (< 2 years)</option>
+                    <option value="1.0" selected>Mid-level (2–5 years)</option>
+                    <option value="1.3">Senior (6–10 years)</option>
+                    <option value="1.6">Expert (10+ years)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="projectType">Project type</label>
+                <select id="projectType">
+                    <option value="1.0">Web development (standard)</option>
+                    <option value="1.2">Full-stack / complex web app</option>
+                    <option value="1.4">Mobile / cross-platform</option>
+                    <option value="1.6">AI / machine learning / blockchain</option>
+                    <option value="0.9">Maintenance / small fixes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="desiredYearly">Desired yearly income (USD)</label>
+                <input type="number" id="desiredYearly" value="90000" min="30000" max="500000" step="1000">
+            </div>
+            <div class="form-group">
+                <label for="billableWeeks">Billable weeks per year</label>
+                <input type="number" id="billableWeeks" value="44" min="30" max="52">
+            </div>
+        </div>
+
+        <button class="btn" id="calculateBtn">⚡ Calculate My Rate</button>
+
+        <div class="result-area" id="resultArea">
+            <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px;">
+                <span class="rate-big" id="hourlyRate">$75</span>
+                <span class="rate-label">/ hour</span>
+            </div>
+            <div class="breakdown">
+                <div class="breakdown-item">
+                    <span class="val" id="weeklyRate">$2,045</span>
+                    <span class="lbl">Weekly (40h)</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="val" id="monthlyRate">$8,864</span>
+                    <span class="lbl">Monthly (4.33w)</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="val" id="yearlyProjected">$90,000</span>
+                    <span class="lbl">Yearly projected</span>
+                </div>
+            </div>
+
+            <div class="affiliate-slot">
+                <h3>📦 Recommended tools to boost your freelance workflow</h3>
+                <div class="product-list">
+                    <div class="product-item">
+                        <span>⌨️ Mechanical keyboard</span>
+                        <span class="product-price">$159</span>
+                        <a href="https://www.amazon.com/s?k=Developer+Freelance+Rate+Calculator&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                    <div class="product-item">
+                        <span>🖥️ Ultra-wide monitor</span>
+                        <span class="product-price">$499</span>
+                        <a href="https://www.amazon.com/s?k=Developer+Freelance+Rate+Calculator&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                    <div class="product-item">
+                        <span>🎧 Noise-cancelling headphones</span>
+                        <span class="product-price">$279</span>
+                        <a href="https://www.amazon.com/s?k=Developer+Freelance+Rate+Calculator&tag=1288282581282-20" target="_blank" rel="noopener">Check price</a>
+                    </div>
+                </div>
+                <div class="footer-note">Affiliate links — we may earn a small commission at no extra cost to you.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card content-section">
+        <h2>📊 How to choose the right freelance developer rate</h2>
+        <p>Setting your hourly or project rate as a developer is one of the most critical decisions for your career. Our <strong>Developer Freelance Rate Calculator</strong> gives you a realistic baseline based on experience, project complexity, and your target income. But beyond the numbers, the right rate depends on your niche, client base, and the value you deliver.</p>
+
+        <p><span class="product-mention">👉 For developers spending long hours coding, the <strong>Logitech MX Keys Mechanical</strong> (around $159) provides tactile precision and reduces fatigue. Pair it with a <strong>Dell UltraSharp 49" Curved Monitor</strong> (approx. $1,199) for an immersive multi-window setup, or the <strong>Samsung 34" Ultra-Wide</strong> (around $499) for a more budget-friendly option. Many top freelancers also rely on the <strong>Sony WH-1000XM5</strong> (about $279) for deep focus during complex sprints.</span></p>
+
+        <p>When pricing your work, consider that <strong>mid-level developers</strong> typically charge $70–$100/hour, while senior developers can command $120–$180/hour. Our calculator uses a conservative multiplier based on your experience and project type. If you're doing AI or blockchain work, the multiplier is higher — reflecting the specialized demand.</p>
+
+        <p>Also factor in non-billable hours: marketing, emails, learning, and admin. That's why we default to 44 billable weeks per year (allowing for 4 weeks vacation + 4 weeks of non-billable work). With a target income of $90,000, the calculator suggests around <strong>$75/hour</strong> — but adjust sliders to see how a higher rate changes your yearly earning potential.</p>
+
+        <p>Finally, remember that your rate should increase over time. Revisit this calculator every 6 months as your portfolio grows. And if you're looking for gear that makes your work more efficient, the <strong>Logitech MX Vertical mouse</strong> ($99) and a <strong>standing desk converter</strong> ($199) are popular upgrades among veteran freelancers.</p>
+
+        <p><strong>Use the tool above</strong> to find your baseline, then compare with industry averages. With the right rate and the right tools, you'll build a sustainable, profitable freelance business.</p>
+        <hr>
+        <p style="font-size:0.9rem; color:#4a5a6e;">* Prices listed are approximate and may vary. Always check current pricing on Amazon. As an Amazon Associate we earn from qualifying purchases.</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const experienceEl = document.getElementById('experience');
+        const projectTypeEl = document.getElementById('projectType');
+        const desiredYearlyEl = document.getElementById('desiredYearly');
+        const billableWeeksEl = document.getElementById('billableWeeks');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const hourlyRateEl = document.getElementById('hourlyRate');
+        const weeklyRateEl = document.getElementById('weeklyRate');
+        const monthlyRateEl = document.getElementById('monthlyRate');
+        const yearlyProjectedEl = document.getElementById('yearlyProjected');
+
+        function computeAndDisplay() {
+            const expMultiplier = parseFloat(experienceEl.value) || 1.0;
+            const projMultiplier = parseFloat(projectTypeEl.value) || 1.0;
+            const desiredYearly = parseFloat(desiredYearlyEl.value) || 90000;
+            const billableWeeks = parseFloat(billableWeeksEl.value) || 44;
+
+            if (billableWeeks <= 0 || desiredYearly <= 0) {
+                // fallback defaults
+                hourlyRateEl.textContent = '$--';
+                weeklyRateEl.textContent = '$--';
+                monthlyRateEl.textContent = '$--';
+                yearlyProjectedEl.textContent = '$--';
+                return;
+            }
+
+            // Base rate calculation: desired yearly / (billable weeks * 40 hours) * combined multiplier normalization
+            const baseHourly = desiredYearly / (billableWeeks * 40);
+            const combinedMult = (expMultiplier * projMultiplier) / 1.2; // normalize around 1.0 mid-level web dev
+            let hourly = baseHourly * combinedMult;
+            // ensure a minimum reasonable rate
+            if (hourly < 25) hourly = 25;
+            // round to whole dollar
+            hourly = Math.round(hourly);
+
+            const weekly = hourly * 40;
+            const monthly = weekly * 4.33;
+            const yearlyProjected = weekly * billableWeeks;
+
+            hourlyRateEl.textContent = `$${hourly}`;
+            weeklyRateEl.textContent = `$${Math.round(weekly).toLocaleString()}`;
+            monthlyRateEl.textContent = `$${Math.round(monthly).toLocaleString()}`;
+            yearlyProjectedEl.textContent = `$${Math.round(yearlyProjected).toLocaleString()}`;
+        }
+
+        // initial calculation
+        computeAndDisplay();
+
+        calculateBtn.addEventListener('click', computeAndDisplay);
+
+        // also compute on change of any input (for live feel, but keep button primary)
+        const inputs = [experienceEl, projectTypeEl, desiredYearlyEl, billableWeeksEl];
+        inputs.forEach(el => el.addEventListener('change', computeAndDisplay));
+        // also on keyup for number fields
+        desiredYearlyEl.addEventListener('input', computeAndDisplay);
+        billableWeeksEl.addEventListener('input', computeAndDisplay);
+    })();
+</script>
+</body>
+</html>
