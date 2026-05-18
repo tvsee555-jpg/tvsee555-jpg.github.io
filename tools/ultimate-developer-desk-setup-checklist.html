@@ -1,0 +1,442 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <meta name="description" content="Ultimate Developer Desk Setup Checklist — interactive guide with product recommendations, prices, and Amazon affiliate links. Build your dream workspace step by step.">
+  <title>Ultimate Developer Desk Setup Checklist</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f1f5f9 0%, #e8eef5 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .checklist-card {
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 36px;
+      padding: 2rem 1.8rem 2.5rem;
+      box-shadow: 0 20px 45px -10px rgba(0, 20, 40, 0.25), 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .subhead {
+      font-size: 1rem;
+      color: #2c3f5a;
+      margin-bottom: 1.7rem;
+      border-left: 4px solid #3a7bd5;
+      padding-left: 1rem;
+      background: rgba(58, 123, 213, 0.06);
+      border-radius: 0 12px 12px 0;
+      line-height: 1.5;
+    }
+
+    /* ---- progress ---- */
+    .progress-container {
+      background: #d7e0ea;
+      border-radius: 60px;
+      height: 14px;
+      margin-bottom: 2rem;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #3a7bd5, #5e9af0);
+      height: 14px;
+      border-radius: 60px;
+      width: 0%;
+      transition: width 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1a2c44;
+      margin: 8px 0 12px 0;
+    }
+
+    /* ---- checklist items ---- */
+    .checklist-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .checklist-item {
+      background: white;
+      border-radius: 24px;
+      padding: 0.9rem 1.2rem 0.9rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      border: 1px solid #eef3f9;
+      transition: all 0.15s;
+    }
+
+    .checklist-item:hover {
+      border-color: #b7d0f0;
+      background: #fafcff;
+    }
+
+    .checklist-item label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      flex: 1;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* custom checkbox */
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #b6c9e0;
+      border-radius: 8px;
+      background: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"]:checked {
+      background: #1f5eb5;
+      border-color: #1f5eb5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-size: 14px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .item-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.3rem 0.7rem;
+      flex: 1;
+    }
+
+    .item-title {
+      font-weight: 600;
+      color: #0b1e33;
+      font-size: 1.1rem;
+      margin-right: 0.2rem;
+    }
+
+    .item-desc {
+      color: #3d5470;
+      font-size: 0.95rem;
+      margin-right: 0.3rem;
+    }
+
+    .product-badge {
+      background: #eef3fa;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #004e9e;
+      background: #e4edf8;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    .product-badge strong {
+      font-weight: 700;
+      color: #003d7a;
+    }
+
+    /* ---- completion section (hidden until all checked) ---- */
+    .completion-section {
+      margin-top: 2.8rem;
+      background: #d9e8fe;
+      border-radius: 32px;
+      padding: 1.8rem 2rem;
+      display: none;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 6px 14px rgba(0, 40, 100, 0.08);
+      transition: all 0.2s;
+    }
+
+    .completion-section.visible {
+      display: block;
+      animation: fadeSlide 0.5s ease;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .completion-section h2 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #002856;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .completion-section p {
+      color: #1a385c;
+      margin: 0.5rem 0 1rem 0;
+      font-size: 1.05rem;
+    }
+
+    .affiliate-link {
+      display: inline-block;
+      background: #004e9e;
+      color: white;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 18px -6px #004e9e60;
+      transition: background 0.2s, transform 0.1s;
+      border: 1px solid #ffffff40;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .affiliate-link:hover {
+      background: #003a78;
+      transform: scale(1.02);
+      box-shadow: 0 10px 20px -6px #00306880;
+    }
+
+    .affiliate-link:active {
+      transform: scale(0.97);
+    }
+
+    .guide-note {
+      margin-top: 2rem;
+      color: #1a3c60;
+      line-height: 1.6;
+      font-size: 0.98rem;
+      background: #e0ecfd;
+      padding: 1.2rem 1.8rem;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .guide-note strong {
+      color: #002856;
+    }
+
+    /* mobile */
+    @media (max-width: 650px) {
+      .checklist-card {
+        padding: 1.5rem 1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .checklist-item {
+        padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+        flex-wrap: wrap;
+      }
+      .product-badge {
+        margin-left: 0;
+        width: fit-content;
+        margin-top: 4px;
+      }
+      .item-content {
+        gap: 0.2rem 0.5rem;
+      }
+      .completion-section {
+        padding: 1.5rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="checklist-card">
+  <h1>🖥️ Ultimate Dev Desk</h1>
+  <div class="subhead">Checklist · step-by-step gear guide with prices</div>
+
+  <!-- progress -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+  </div>
+  <div class="progress-text">
+    <span id="progressLabel">0 / 8 completed</span>
+    <span id="progressPercent">0%</span>
+  </div>
+
+  <!-- checklist items (8) -->
+  <div class="checklist-grid" id="checklistContainer">
+    <!-- each item: product & explicit price -->
+    <div class="checklist-item" data-index="0">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Ergonomic chair</span>
+          <span class="item-desc">— Herman Miller Aeron</span>
+          <span class="product-badge"><strong>$1,295</strong> · iconic</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="1">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Ultrawide monitor</span>
+          <span class="item-desc">— LG 34WN80C-B</span>
+          <span class="product-badge"><strong>$649</strong> · USB-C</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="2">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Mechanical keyboard</span>
+          <span class="item-desc">— Keychron Q1 Pro</span>
+          <span class="product-badge"><strong>$199</strong> · hot-swap</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="3">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Vertical mouse</span>
+          <span class="item-desc">— Logitech MX Vertical</span>
+          <span class="product-badge"><strong>$99</strong> · ergo</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="4">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Desk shelf / riser</span>
+          <span class="item-desc">— Grovemade desk shelf</span>
+          <span class="product-badge"><strong>$179</strong> · walnut</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="5">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">LED task light</span>
+          <span class="item-desc">— BenQ ScreenBar Pro</span>
+          <span class="product-badge"><strong>$119</strong> · auto-dimmer</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="6">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">USB-C hub / dock</span>
+          <span class="item-desc">— CalDigit TS4</span>
+          <span class="product-badge"><strong>$379</strong> · 18 ports</span>
+        </div>
+      </label>
+    </div>
+    <div class="checklist-item" data-index="7">
+      <label>
+        <input type="checkbox" class="check-item">
+        <div class="item-content">
+          <span class="item-title">Noise-canceling headphones</span>
+          <span class="item-desc">— Sony WH-1000XM5</span>
+          <span class="product-badge"><strong>$349</strong> · ANC</span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- completion section (hidden until all checked) -->
+  <div class="completion-section" id="completionSection">
+    <h2>✅ Ultimate desk ready</h2>
+    <p>You’ve selected the essential pro-gear. Grab these exact models on Amazon & level up your workflow.</p>
+    <a class="affiliate-link" href="https://www.amazon.com/s?k=Ultimate+Developer+Desk+Setup+Checklist&tag=1288282581282-20" target="_blank" rel="noopener">
+      🔗 Get the tool · Amazon picks
+    </a>
+    <div style="margin-top: 0.8rem; font-size: 0.9rem; color: #00407a;">
+      <em>Includes chair, monitor, keyboard, mouse, riser, light, dock, headphones</em>
+    </div>
+  </div>
+
+  <!-- ~300 words guide content with product recommendations -->
+  <div class="guide-note">
+    <strong>🛠️ The Ultimate Developer Desk Setup — step by step.</strong><br><br>
+    Every developer needs a space that blends ergonomics, efficiency, and comfort. Start with a <strong>Herman Miller Aeron</strong> ($1,295) — it’s the gold standard for all-day sitting. Pair it with an <strong>LG 34WN80C-B ultrawide</strong> ($649) for seamless multitasking without multiple monitors. For typing, the <strong>Keychron Q1 Pro</strong> ($199) gives you a premium mechanical feel; the <strong>Logitech MX Vertical</strong> ($99) reduces wrist strain. Elevate your screen with a <strong>Grovemade desk shelf</strong> ($179) — beautiful walnut and improved posture. The <strong>BenQ ScreenBar Pro</strong> ($119) lights your desk without glare. Keep everything connected with the <strong>CalDigit TS4</strong> ($379) hub, and focus deeply with <strong>Sony WH-1000XM5</strong> ($349) headphones. This setup has been refined by remote developers and creators worldwide — get each piece via our Amazon link above, and transform your workflow.
+  </div>
+</div>
+
+<script>
+  (function() {
+    const checkboxes = document.querySelectorAll('.check-item');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const progressPercent = document.getElementById('progressPercent');
+    const completionSection = document.getElementById('completionSection');
+    const totalItems = checkboxes.length;
+
+    function updateProgress() {
+      let checkedCount = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+      });
+
+      const percent = Math.round((checkedCount / totalItems) * 100);
+      const percentRounded = Math.min(100, percent);
+      progressBar.style.width = percentRounded + '%';
+      progressLabel.textContent = `${checkedCount} / ${totalItems} completed`;
+      progressPercent.textContent = percentRounded + '%';
+
+      // show completion when all checked
+      if (checkedCount === totalItems) {
+        completionSection.classList.add('visible');
+      } else {
+        completionSection.classList.remove('visible');
+      }
+    }
+
+    // attach event listeners
+    checkboxes.forEach(cb => {
