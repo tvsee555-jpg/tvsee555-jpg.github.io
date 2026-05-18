@@ -3,473 +3,411 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-  <meta name="description" content="Team AI Tools Onboarding Checklist – interactive guide for adopting AI across your team. Track steps, get completion recommendations & affiliate tool links.">
-  <title>AI Tools Onboarding Checklist for Teams · interactive guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>AI Tools Onboarding Checklist for Teams · Interactive Guide</title>
+  <meta name="description" content="Step‑by‑step interactive checklist to onboard your team with AI tools. Track progress, get team‑ready, and explore top‑rated AI products.">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
     }
 
     body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: linear-gradient(145deg, #f6f9fc 0%, #edf2f8 100%);
+      background: linear-gradient(145deg, #f1f5f9 0%, #e9edf2 100%);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.5rem;
-      color: #1a2639;
+      padding: 1.5rem;
     }
 
-    .container {
-      max-width: 820px;
+    .card {
+      max-width: 860px;
       width: 100%;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(2px);
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius: 2.5rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 20, 40, 0.25), 0 6px 14px rgba(0,0,0,0.03);
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0,0,0,0.05);
       padding: 2rem 2rem 2.8rem;
-      transition: box-shadow 0.2s;
+      transition: all 0.2s ease;
       border: 1px solid rgba(255,255,255,0.5);
     }
 
-    @media (max-width: 550px) {
-      .container {
-        padding: 1.6rem 1.2rem 2rem;
-        border-radius: 2rem;
-      }
+    @media (max-width: 500px) {
+      .card { padding: 1.5rem 1.2rem; }
     }
 
     h1 {
-      font-size: 1.9rem;
+      font-size: 2.1rem;
       font-weight: 600;
       letter-spacing: -0.02em;
+      color: #0b1e33;
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
       flex-wrap: wrap;
-      margin-bottom: 0.25rem;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
     }
 
-    h1 span {
-      background: #eaeef3;
-      padding: 0.1rem 0.8rem;
-      border-radius: 40px;
+    h1 small {
       font-size: 1rem;
       font-weight: 400;
-      color: #25415b;
+      color: #2c4b6b;
+      background: #d9e2ef;
+      padding: 0.15rem 1rem;
+      border-radius: 40px;
+      margin-left: 0.2rem;
     }
 
     .subhead {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-      color: #3d4b62;
-      font-weight: 450;
-      font-size: 0.95rem;
-      border-bottom: 1px solid #e3eaf0;
-      padding-bottom: 0.6rem;
+      color: #2b4b6a;
+      font-weight: 400;
+      font-size: 1rem;
+      border-left: 4px solid #3b7bc9;
+      padding-left: 1rem;
+      margin: 0.5rem 0 1.5rem 0;
+      background: #eef4fa80;
+      border-radius: 0 8px 8px 0;
     }
 
-    .subhead .count-badge {
-      background: #dce7f2;
-      padding: 0.15rem 0.9rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    /* progress */
-    .progress-wrapper {
-      background: #e7eef5;
+    .progress-container {
+      background: #e3eaf2;
+      height: 1.1rem;
       border-radius: 40px;
-      height: 1.2rem;
-      margin: 0.75rem 0 1.6rem;
+      margin: 0.5rem 0 1.8rem 0;
       box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-      position: relative;
-      overflow: hidden;
     }
 
     .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #2f6f9f, #3f87c0);
+      background: linear-gradient(90deg, #2667b0, #4f95e0);
+      height: 1.1rem;
       border-radius: 40px;
-      transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);
-    }
-
-    .progress-label {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.75rem;
+      width: 0%;
+      transition: width 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 6px;
+      font-size: 0.7rem;
+      color: white;
       font-weight: 500;
-      background: rgba(255,255,255,0.85);
-      padding: 0.0rem 0.6rem;
-      border-radius: 30px;
-      color: #1f3a4f;
-      pointer-events: none;
-      backdrop-filter: blur(1px);
+      min-width: 2rem;
     }
 
-    .guide-text {
-      background: #f0f5fb;
-      padding: 1rem 1.4rem;
-      border-radius: 1.5rem;
-      margin-bottom: 1.8rem;
-      line-height: 1.6;
-      font-size: 0.93rem;
-      color: #1c2f41;
-      border-left: 4px solid #3173a5;
+    .progress-fill:after {
+      content: attr(data-progress);
+      opacity: 0.8;
     }
 
-    .checklist {
+    .checklist-grid {
       display: flex;
       flex-direction: column;
-      gap: 0.45rem;
+      gap: 0.8rem;
+      margin-bottom: 2.2rem;
     }
 
-    .checklist-item {
+    .check-item {
       display: flex;
       align-items: center;
       gap: 0.8rem;
-      padding: 0.5rem 0.8rem 0.5rem 0.5rem;
-      background: #fafcfe;
-      border-radius: 60px;
-      transition: background 0.15s, box-shadow 0.1s;
-      border: 1px solid #e6edf5;
-    }
-
-    .checklist-item:hover {
-      background: #f2f8ff;
-      border-color: #c7d9e9;
-    }
-
-    .checklist-item label {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex: 1;
-      cursor: pointer;
-      padding: 0.25rem 0;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: #1f3143;
-    }
-
-    input[type="checkbox"] {
-      appearance: none;
-      width: 1.4rem;
-      height: 1.4rem;
-      border: 2px solid #b7cbdd;
-      border-radius: 30px;
       background: white;
-      display: inline-flex;
+      padding: 0.9rem 1.2rem 0.9rem 1rem;
+      border-radius: 60px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: all 0.15s;
+      border: 1px solid #e9eff6;
+    }
+
+    .check-item:hover {
+      border-color: #b9d2ea;
+      background: #f8fcff;
+    }
+
+    .check-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 2px solid #afc6de;
+      border-radius: 12px;
+      background: white;
+      transition: 0.15s;
+      display: flex;
       align-items: center;
       justify-content: center;
-      transition: 0.12s;
-      flex-shrink: 0;
       cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      flex-shrink: 0;
     }
 
-    input[type="checkbox"]:checked {
-      background: #1f6390;
-      border-color: #1f6390;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-      background-size: 0.85rem;
+    .check-item input[type="checkbox"]:checked {
+      background: #1d6bc3;
+      border-color: #1d6bc3;
+      box-shadow: 0 2px 6px rgba(29, 107, 195, 0.15);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-size: 1.2rem;
       background-position: center;
       background-repeat: no-repeat;
     }
 
-    .checklist-item .step-num {
-      background: #dbe6f0;
-      border-radius: 30px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.15rem 0.65rem;
-      color: #1e4a6e;
+    .check-item label {
+      flex: 1;
+      font-weight: 500;
+      color: #152b40;
+      cursor: pointer;
+      padding: 0.1rem 0;
+      letter-spacing: -0.01em;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.3rem 0.6rem;
+    }
+
+    .check-item label .tag {
+      background: #dce7f5;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.15rem 0.85rem;
+      border-radius: 40px;
+      color: #1a4470;
       letter-spacing: 0.02em;
     }
 
+    .check-item .step-num {
+      background: #e3edf9;
+      border-radius: 40px;
+      padding: 0.1rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #1a4470;
+      margin-right: 0.2rem;
+    }
+
     .completion-section {
-      margin-top: 2.2rem;
-      background: #ecf3fa;
-      border-radius: 2rem;
+      background: #eef6fe;
       padding: 1.5rem 1.8rem;
-      text-align: center;
-      border: 1px solid #dce8f2;
-      transition: background 0.25s;
+      border-radius: 2rem;
+      margin: 1.2rem 0 1.8rem;
+      border: 1px solid #ccdef5;
+      transition: opacity 0.25s;
     }
 
     .completion-section h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      color: #123a54;
+      gap: 0.6rem;
+      font-size: 1.5rem;
+      font-weight: 550;
+      color: #0a2540;
+      margin-bottom: 0.4rem;
     }
 
     .completion-section p {
-      font-size: 0.95rem;
-      color: #1b3a51;
-      margin-bottom: 1.2rem;
+      color: #1d3b58;
+      margin-bottom: 1rem;
+      line-height: 1.5;
     }
 
-    .tool-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    .tool-links a {
-      background: white;
-      padding: 0.6rem 1.2rem;
+    .amazon-link {
+      display: inline-block;
+      background: #1a3f60;
+      color: white;
+      padding: 0.8rem 2.2rem;
       border-radius: 60px;
-      text-decoration: none;
-      color: #1a4c6e;
       font-weight: 500;
-      border: 1px solid #bed2e3;
-      transition: 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.02);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: all 0.2s;
+      border: 1px solid #ffffff70;
+      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.2);
+      margin-top: 0.2rem;
     }
 
-    .tool-links a:hover {
-      background: #e7f0fa;
-      border-color: #1f6390;
+    .amazon-link:hover {
+      background: #0f2e48;
       transform: scale(1.02);
+      box-shadow: 0 10px 18px -8px rgba(0, 35, 70, 0.5);
     }
 
-    .tool-links a::before {
-      content: "🛠️";
-      font-size: 1rem;
+    .guide-content {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #1f3b54;
+      background: #ffffffc0;
+      padding: 1.5rem 1.8rem;
+      border-radius: 1.5rem;
+      margin-top: 0.2rem;
+      border: 1px solid #dbe6f0;
     }
 
-    .foot-note {
-      margin-top: 1.2rem;
-      font-size: 0.8rem;
-      color: #3b5b77;
-      opacity: 0.8;
+    .guide-content p {
+      margin-bottom: 1rem;
+    }
+
+    .guide-content strong {
+      color: #0a2a47;
     }
 
     .reset-btn {
       background: transparent;
-      border: 1px solid #cdddee;
-      padding: 0.25rem 1rem;
+      border: 1px solid #b8cde0;
+      padding: 0.45rem 1.4rem;
       border-radius: 40px;
-      font-size: 0.75rem;
-      color: #1f4762;
-      margin-left: 0.5rem;
+      font-size: 0.8rem;
+      color: #1f4466;
       cursor: pointer;
-      transition: 0.15s;
+      transition: 0.2s;
+      margin-left: 1rem;
     }
 
     .reset-btn:hover {
-      background: #dbe7f3;
-      border-color: #6688a5;
+      background: #dae6f5;
+      border-color: #3d79b0;
     }
 
-    .soft-highlight {
-      background: #ffffffd0;
+    .flex-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
     }
 
-    footer {
-      margin-top: 1rem;
-      font-size: 0.7rem;
-      color: #4d6880;
+    @media (max-width: 550px) {
+      h1 { font-size: 1.8rem; }
+      .check-item { border-radius: 30px; padding: 0.75rem 1rem; }
+      .completion-section { padding: 1.2rem; }
+      .guide-content { padding: 1rem; }
     }
   </style>
 </head>
 <body>
-<div class="container" role="main">
-  <h1>
-    🧠 AI Onboarding Checklist
-    <span>teams</span>
-  </h1>
-  <div class="subhead">
-    <span>guide · 7 essential steps</span>
-    <span class="count-badge" id="checkCount">0 / 7</span>
-    <button class="reset-btn" id="resetBtn" aria-label="reset checklist">↻ reset</button>
+<div class="card">
+  <div class="flex-row">
+    <h1>🧠 AI Onboarding <small>team edition</small></h1>
+    <button class="reset-btn" id="resetChecklist" aria-label="Reset all steps">↻ reset</button>
+  </div>
+  <div class="subhead">Interactive checklist · track team readiness</div>
+
+  <!-- progress bar -->
+  <div class="progress-container">
+    <div class="progress-fill" id="progressFill" data-progress="0%" style="width: 0%;">0%</div>
   </div>
 
-  <!-- progress -->
-  <div class="progress-wrapper">
-    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-    <span class="progress-label" id="progressLabel">0%</span>
-  </div>
-
-  <!-- guide content ~250 words -->
-  <div class="guide-text">
-    <strong>📘 Quick guide</strong> – Adopting AI tools as a team requires a structured approach. This checklist walks you through 7 core phases: <strong>define use cases, select tools, pilot with a small group, set up permissions & data safety, train the team, integrate into workflows, and gather feedback.</strong> Each step reduces friction and builds momentum. Studies show teams that follow a structured onboarding are 3x more likely to see productivity gains within the first month. Use the interactive checklist to track your progress, and once you’ve completed all steps, get tool recommendations (with affiliate links) to power your AI stack. 🚀
-  </div>
-
-  <!-- interactive checklist (7 items) -->
-  <div class="checklist" id="checklistContainer">
-    <!-- each item uses label + hidden step number; data-step for progress -->
-    <div class="checklist-item" data-step="1">
-      <label>
-        <input type="checkbox" class="check-input" data-index="0">
-        <span class="step-num">01</span> Define team AI use cases & goals
-      </label>
+  <!-- checklist items (8 steps) -->
+  <div class="checklist-grid" id="checklistContainer">
+    <div class="check-item">
+      <input type="checkbox" id="step1" data-step="1">
+      <label for="step1"><span class="step-num">01</span> Define AI goals & team roles <span class="tag">strategy</span></label>
     </div>
-    <div class="checklist-item" data-step="2">
-      <label>
-        <input type="checkbox" class="check-input" data-index="1">
-        <span class="step-num">02</span> Research & select appropriate tools
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step2" data-step="2">
+      <label for="step2"><span class="step-num">02</span> Audit existing tools & permissions <span class="tag">discovery</span></label>
     </div>
-    <div class="checklist-item" data-step="3">
-      <label>
-        <input type="checkbox" class="check-input" data-index="2">
-        <span class="step-num">03</span> Pilot with 3–5 team members
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step3" data-step="3">
+      <label for="step3"><span class="step-num">03</span> Select core AI platform (ChatGPT / Copilot) <span class="tag">core</span></label>
     </div>
-    <div class="checklist-item" data-step="4">
-      <label>
-        <input type="checkbox" class="check-input" data-index="3">
-        <span class="step-num">04</span> Set permissions & data safety rules
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step4" data-step="4">
+      <label for="step4"><span class="step-num">04</span> Set up team workspace & access <span class="tag">admin</span></label>
     </div>
-    <div class="checklist-item" data-step="5">
-      <label>
-        <input type="checkbox" class="check-input" data-index="4">
-        <span class="step-num">05</span> Train team (hands-on session)
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step5" data-step="5">
+      <label for="step5"><span class="step-num">05</span> Create usage guidelines & ethics <span class="tag">policy</span></label>
     </div>
-    <div class="checklist-item" data-step="6">
-      <label>
-        <input type="checkbox" class="check-input" data-index="5">
-        <span class="step-num">06</span> Integrate AI into daily workflows
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step6" data-step="6">
+      <label for="step6"><span class="step-num">06</span> Run pilot projects (2-3 teams) <span class="tag">pilot</span></label>
     </div>
-    <div class="checklist-item" data-step="7">
-      <label>
-        <input type="checkbox" class="check-input" data-index="6">
-        <span class="step-num">07</span> Collect feedback & iterate
-      </label>
+    <div class="check-item">
+      <input type="checkbox" id="step7" data-step="7">
+      <label for="step7"><span class="step-num">07</span> Collect feedback & iterate <span class="tag">review</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="step8" data-step="8">
+      <label for="step8"><span class="step-num">08</span> Full rollout + training <span class="tag">launch</span></label>
     </div>
   </div>
 
-  <!-- completion section (affiliate + recommendations) -->
-  <div class="completion-section" id="completionBox">
-    <h2>✅ All done? Level up your stack</h2>
-    <p>Your team is ready for production AI tools. Here are recommended products (affiliate links) to accelerate your workflow:</p>
-    <div class="tool-links">
-      <a href="https://www.amazon.com/s?k=AI+Tools+Onboarding+Checklist+for+Teams&tag=1288282581282-20" target="_blank" rel="noopener">Get the tool</a>
-      <a href="https://www.amazon.com/s?k=AI+productivity+suite+team&tag=1288282581282-20" target="_blank" rel="noopener">AI productivity suite</a>
-      <a href="https://www.amazon.com/s?k=team+AI+training+guide&tag=1288282581282-20" target="_blank" rel="noopener">Training & guides</a>
+  <!-- completion & recommendation -->
+  <div class="completion-section" id="completionBlock">
+    <h2>✅ <span id="completionHeadline">Start checking steps</span></h2>
+    <p id="completionMessage">Complete all 8 steps to unlock top‑rated AI tools for your team.</p>
+    <div id="recommendationArea">
+      <a href="https://www.amazon.com/s?k=AI+Tools+Onboarding+Checklist+for+Teams&tag=1288282581282-20" class="amazon-link" target="_blank" rel="noopener noreferrer">
+        📦 Get the tool · Amazon picks
+      </a>
     </div>
-    <div class="foot-note">🔎 Amazon affiliate – we earn from qualifying purchases.</div>
   </div>
-  <footer>interactive onboarding · AI Tools Checklist for Teams</footer>
+
+  <!-- SEO guide content (~250 words) -->
+  <div class="guide-content">
+    <p><strong>Why an AI onboarding checklist?</strong> Teams that adopt AI tools systematically see 3x faster integration and fewer security gaps. This interactive guide helps you move from strategy to full rollout — with clear steps and progress tracking.</p>
+    <p><strong>Start with goals & roles:</strong> Define what your team needs (automation, content, analysis). Assign AI champions. Next, audit existing subscriptions and avoid duplicate tools. Choosing a core platform (like Microsoft Copilot or ChatGPT Enterprise) sets the foundation.</p>
+    <p><strong>Workspace & governance:</strong> Configure permissions, data privacy, and team access. Draft lightweight usage guidelines — it boosts trust and adoption. Pilot with 2-3 enthusiastic teams, gather feedback, then refine.</p>
+    <p><strong>Full rollout & beyond:</strong> After iterating, schedule training and celebrate early wins. Use this checklist to track progress in real time. Once you’re 8/8, explore curated AI tools and hardware (Amazon affiliate link below) to supercharge your stack.</p>
+    <p style="margin-bottom:0;">✅ <strong>Pro tip:</strong> Revisit quarterly — AI evolves fast. Keep your team ahead.</p>
+  </div>
 </div>
 
 <script>
   (function() {
-    // Selectors
-    const checkboxes = document.querySelectorAll('.check-input');
+    const checkboxes = document.querySelectorAll('#checklistContainer input[type="checkbox"]');
     const progressFill = document.getElementById('progressFill');
-    const progressLabel = document.getElementById('progressLabel');
-    const checkCount = document.getElementById('checkCount');
-    const resetBtn = document.getElementById('resetBtn');
-    const completionBox = document.getElementById('completionBox');
+    const completionHeadline = document.getElementById('completionHeadline');
+    const completionMessage = document.getElementById('completionMessage');
 
-    const totalSteps = checkboxes.length; // 7
-
-    // Restore from localStorage (if any)
-    function loadChecklistState() {
-      try {
-        const stored = localStorage.getItem('ai_onboarding_checks');
-        if (stored) {
-          const arr = JSON.parse(stored);
-          if (Array.isArray(arr) && arr.length === totalSteps) {
-            checkboxes.forEach((cb, idx) => {
-              cb.checked = arr[idx] === true;
-            });
-          }
-        }
-      } catch (e) {
-        // ignore
+    function updateProgress() {
+      let total = checkboxes.length;
+      let checked = 0;
+      for (let cb of checkboxes) {
+        if (cb.checked) checked++;
       }
-    }
+      const pct = total === 0 ? 0 : Math.round((checked / total) * 100);
+      const width = pct + '%';
+      progressFill.style.width = width;
+      progressFill.setAttribute('data-progress', pct + '%');
+      progressFill.textContent = pct + '%';
 
-    // Save state
-    function saveState() {
-      const state = Array.from(checkboxes).map(cb => cb.checked);
-      localStorage.setItem('ai_onboarding_checks', JSON.stringify(state));
-    }
-
-    // Update progress bar, counter, and completion highlight
-    function updateUI() {
-      let checkedCount = 0;
-      checkboxes.forEach(cb => {
-        if (cb.checked) checkedCount++;
-      });
-
-      const percent = Math.round((checkedCount / totalSteps) * 100);
-      progressFill.style.width = percent + '%';
-      progressLabel.textContent = percent + '%';
-      checkCount.textContent = `${checkedCount} / ${totalSteps}`;
-
-      // subtle change on completion section background if all done
-      if (checkedCount === totalSteps) {
-        completionBox.style.background = '#e3f0e9';
-        completionBox.style.borderColor = '#2b8560';
+      // update completion section
+      if (pct === 100) {
+        completionHeadline.textContent = '🎉 Team ready!';
+        completionMessage.innerHTML = 'You completed all onboarding steps. Now equip your team with top‑rated AI tools.';
+      } else if (pct === 0) {
+        completionHeadline.textContent = '📋 Start your checklist';
+        completionMessage.textContent = 'Complete all 8 steps to unlock top‑rated AI tools for your team.';
       } else {
-        completionBox.style.background = '#ecf3fa';
-        completionBox.style.borderColor = '#dce8f2';
+        completionHeadline.textContent = `🚀 ${checked}/${total} steps done`;
+        completionMessage.textContent = `Keep going! ${total - checked} more step${total - checked > 1 ? 's' : ''} to full AI readiness.`;
       }
-
-      // Also animate checkbox item style (already checked via :checked)
-      saveState();
     }
 
-    // reset all checkboxes
-    function resetChecklist() {
-      checkboxes.forEach(cb => { cb.checked = false; });
-      updateUI();
-      // also clear stored?
-      localStorage.removeItem('ai_onboarding_checks');
-      // focus
-      progressFill.focus({preventScroll:true});
+    // attach event listeners
+    for (let cb of checkboxes) {
+      cb.addEventListener('change', updateProgress);
     }
 
-    // Event binding
-    function bindEvents() {
-      checkboxes.forEach(cb => {
-        cb.addEventListener('change', function(e) {
-          updateUI();
-        });
-      });
-
-      resetBtn.addEventListener('click', function(e) {
-        resetChecklist();
-      });
-    }
-
-    // initial load
-    loadChecklistState();
-    bindEvents();
-    updateUI();
-
-    // on page load, ensure state consistency (saved after load)
-    window.addEventListener('load', function() {
-      // extra safety
+    // reset button
+    document.getElementById('resetChecklist').addEventListener('click', function() {
+      for (let cb of checkboxes) {
+        cb.checked = false;
+      }
+      updateProgress();
     });
 
+    // initial state
+    updateProgress();
+
+    // after small delay ensure progress reflects default (unchecked)
+    // (already called, ok)
+  })();
+</script>
+
+<!-- also ensure that if someone clicks label, it toggles checkbox -->
+<!-- all labels have “for” attribute – works native -->
+</body>
+</html>
+```
