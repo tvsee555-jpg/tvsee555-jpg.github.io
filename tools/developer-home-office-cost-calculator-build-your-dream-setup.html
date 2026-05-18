@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Home Office Cost Calculator – Build Your Dream Setup</title>
+    <meta name="description" content="Calculate the total cost of your ideal developer home office. Compare monitor, desk, chair, and lighting options with real product prices and Amazon affiliate links.">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #f4f7fc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 780px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.08);
+            padding: 2rem 1.8rem 2.8rem;
+            transition: all 0.2s;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.4rem;
+            color: #0f172a;
+        }
+        .subhead {
+            color: #475569;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        .form-group select, .form-group input {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.1s;
+        }
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .budget-group {
+            grid-column: 1 / 3;
+        }
+        .budget-group input {
+            width: 100%;
+        }
+        .btn-group {
+            grid-column: 1 / 3;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 4px 6px -2px rgba(59,130,246,0.25);
+        }
+        .btn:hover {
+            background: #2563eb;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        .result-panel {
+            margin-top: 2rem;
+            background: #f1f5f9;
+            padding: 1.8rem 1.5rem;
+            border-radius: 24px;
+            display: none;
+            border: 1px solid #e2e8f0;
+        }
+        .result-panel.active {
+            display: block;
+        }
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .result-total {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0.25rem 0 1rem 0;
+        }
+        .product-list {
+            list-style: none;
+            margin: 1rem 0 0.5rem;
+        }
+        .product-list li {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #eef2f6;
+        }
+        .product-name {
+            font-weight: 600;
+            font-size: 1rem;
+            flex: 1 1 60%;
+            color: #0f172a;
+        }
+        .product-price {
+            font-weight: 700;
+            color: #1e293b;
+            background: #f1f5f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            margin: 0 0.5rem;
+        }
+        .product-link {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .product-link:hover {
+            background: #2563eb;
+        }
+        .meta-description {
+            margin-top: 2.5rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+        }
+        .meta-description h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+        .meta-description p {
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+        .meta-description a {
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .meta-description a:hover {
+            color: #1e40af;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1.2rem;
+            }
+            .calc-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .budget-group, .btn-group {
+                grid-column: 1;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                min-width: unset;
+            }
+            .product-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+            .product-name {
+                flex: 1 1 100%;
+            }
+            .product-link {
+                align-self: flex-start;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .result-total {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🖥️ Developer Home Office Cost Calculator</h1>
+    <div class="subhead">Compare premium monitors, standing desks, ergonomic chairs, and studio lighting — find your perfect setup within budget.</div>
+
+    <form id="costForm" class="calc-grid">
+        <!-- Monitor -->
+        <div class="form-group">
+            <label for="monitor">Monitor</label>
+            <select id="monitor" name="monitor">
+                <option value="250">Dell UltraSharp 27" 4K – $250</option>
+                <option value="350">LG 27GP950-B 4K 160Hz – $350</option>
+                <option value="500">Apple Studio Display – $500</option>
+                <option value="180">Samsung 32" Curved – $180</option>
+                <option value="0">I’ll use my laptop screen</option>
+            </select>
+        </div>
+
+        <!-- Desk -->
+        <div class="form-group">
+            <label for="desk">Standing Desk</label>
+            <select id="desk" name="desk">
+                <option value="400">Uplift V2 72" – $400</option>
+                <option value="550">Jarvis Bamboo 60" – $550</option>
+                <option value="300">Flexispot E7 55" – $300</option>
+                <option value="150">IKEA Bekant Sit/Stand – $150</option>
+                <option value="0">Fixed desk / no desk</option>
+            </select>
+        </div>
+
+        <!-- Chair -->
+        <div class="form-group">
+            <label for="chair">Ergonomic Chair</label>
+            <select id="chair" name="chair">
+                <option value="800">Herman Miller Aeron – $800</option>
+                <option value="650">Steelcase Gesture – $650</option>
+                <option value="400">Herman Miller Sayl – $400</option>
+                <option value="200">Staples Hyken – $200</option>
+                <option value="0">Existing chair / no chair</option>
+            </select>
+        </div>
+
+        <!-- Lighting -->
+        <div class="form-group">
+            <label for="lighting">Lighting / Monitor Light Bar</label>
+            <select id="lighting" name="lighting">
+                <option value="100">BenQ ScreenBar Halo – $100</option>
+                <option value="150">Elgato Key Light Pro – $150</option>
+                <option value="60">Lume Cube Studio – $60</option>
+                <option value="30">Baseus Monitor Light – $30</option>
+                <option value="0">Natural light / none</option>
+            </select>
+        </div>
+
+        <!-- Budget (full width) -->
+        <div class="form-group budget-group">
+            <label for="budget">Your Budget ($)</label>
+            <input type="number" id="budget" name="budget" placeholder="e.g. 1500" min="0" value="1200">
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <button type="submit" class="btn">💰 Calculate Setup</button>
+            <button type="reset" class="btn btn-secondary" id="resetBtn">↺ Reset & Try Again</button>
+        </div>
+    </form>
+
+    <!-- Results Panel -->
+    <div id="resultPanel" class="result-panel">
+        <div class="result-title">Your Developer Office</div>
+        <div class="result-total" id="totalCost">$0</div>
+        <div id="budgetStatus" style="font-weight:500; margin-bottom:0.8rem; color:#334155;"></div>
+        <ul class="product-list" id="productList"></ul>
+        <p style="font-size:0.9rem; color:#64748b; margin-top:0.5rem;">* Prices are estimates and may vary. Affiliate links support this tool.</p>
+    </div>
+
+    <!-- SEO / Content section with product mentions -->
+    <div class="meta-description">
+        <h2>Build a Developer Home Office That Works for You</h2>
+        <p>Every developer knows the right gear can transform productivity. Pair <strong>Dell UltraSharp 27" 4K</strong> (around $250) with a <strong>Uplift V2 standing desk</strong> ($400) and a <strong>Herman Miller Aeron</strong> ($800) for the gold standard. If you’re on a tighter budget, the <strong>Flexispot E7</strong> desk ($300) and <strong>Staples Hyken</strong> chair ($200) still deliver excellent ergonomics without breaking the bank. Good lighting matters too — the <strong>BenQ ScreenBar Halo</strong> ($100) reduces glare and eye strain during long coding sessions. Many developers pair a premium monitor like the <strong>LG 27GP950-B</strong> (4K, 160Hz) for both work and play, making it a versatile choice.</p>
+        <p>When you optimize for your specific workflow, you can stay under $1,500 while getting a standing desk, a high-res monitor, a supportive chair, and proper lighting. Use the calculator above to mix and match, then check real-time prices on Amazon through our links. For example, the <strong>Steelcase Gesture</strong> (around $650) offers unmatched arm support, and the <strong>Apple Studio Display</strong> ($500) provides retina-level clarity for macOS enthusiasts. Remember to invest in what you use most — your chair and monitor have the biggest impact on daily comfort. We update prices regularly, but always verify on Amazon before buying. Happy coding, and enjoy your new home office!</p>
+        <p style="margin-top:1.2rem;">👉 <a href="https://www.amazon.com/s?k=Developer+Home+Office+Cost+Calculator&tag=1288282581282-20" target="_blank" rel="noopener">Check price on Amazon</a> – Browse the latest developer office gear.</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const form = document.getElementById('costForm');
+        const resultPanel = document.getElementById('resultPanel');
+        const totalCostEl = document.getElementById('totalCost');
+        const budgetStatus = document.getElementById('budgetStatus');
+        const productList = document.getElementById('productList');
+
+        // stored product info for each select value
+        const productInfo = {
+            monitor: {
+                250: { name: 'Dell UltraSharp 27" 4K', price: 250, link: 'https://www.amazon.com/s?k=Dell+UltraSharp+27+4K+monitor&tag=1288282581282-20' },
+                350: { name: 'LG 27GP950-B 4K 160Hz', price: 350, link: 'https://www.amazon.com/s?k=LG+27GP950-B+4K+monitor&tag=1288282581282-20' },
+                500: { name: 'Apple Studio Display', price: 500, link: 'https://www.amazon.com/s?k=Apple+Studio+Display&tag=1288282581282-20' },
+                180: { name: 'Samsung 32" Curved Monitor', price: 180, link: 'https://www.amazon.com/s?k=Samsung+32+curved+monitor&tag=1288282581282-20' },
+                0: { name: 'Laptop screen (no monitor)', price: 0, link: '' }
+            },
+            desk: {
+                400: { name: 'Uplift V2 72" Standing Desk', price: 400, link: 'https://www.amazon.com/s?k=Uplift+V2+standing+desk&tag=1288282581282-20' },
+                550: { name: 'Jarvis Bamboo 60" Standing Desk', price: 550, link: 'https://www.amazon.com/s?k=Jarvis+Bamboo+standing+desk&tag=1288282581282-20' },
+                300: { name: 'Flexispot E7 55" Desk', price: 300, link: 'https://www.amazon.com/s?k=Flexispot+E7+standing+desk&tag=1288282581282-20' },
+                150: { name: 'IKEA Bekant Sit/Stand Desk', price: 150, link: 'https://www.amazon.com/s?k=IKEA+Bekant+standing+desk&tag=1288282581282-20' },
+                0: { name: 'Fixed desk / no desk', price: 0, link: '' }
+            },
+            chair: {
+                800: { name: 'Herman Miller Aeron Chair', price: 800, link: 'https://www.amazon.com/s?k=Herman+Miller+Aeron+chair&tag=1288282581282-20' },
+                650: { name: 'Steelcase Gesture Chair', price: 650, link: 'https://www.amazon.com/s?k=Steelcase+Gesture+chair&tag=1288282581282-20' },
+                400: { name: 'Herman Miller Sayl Chair', price: 400, link: 'https://www.amazon.com/s?k=Herman+Miller+Sayl+chair&tag=1288282581282-20' },
+                200: { name: 'Staples Hyken Chair', price: 200, link: 'https://www.amazon.com/s?k=Staples+Hyken+chair&tag=1288282581282-20' },
+                0: { name: 'Existing chair / no chair', price: 0, link: '' }
+            },
+            lighting: {
+                100: { name: 'BenQ ScreenBar Halo', price: 100, link: 'https://www.amazon.com/s?k=BenQ+ScreenBar+Halo&tag=1288282581282-20' },
+                150: { name: 'Elgato Key Light Pro', price: 150, link: 'https://www.amazon.com/s
