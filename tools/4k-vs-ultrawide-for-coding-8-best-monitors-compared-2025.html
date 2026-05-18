@@ -1,0 +1,414 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>4K vs Ultrawide for Coding: 8 Best Monitors Compared (2025)</title>
+    <meta name="description" content="Hands-on comparison of 4K and ultrawide monitors for programming. See specs, prices, ratings & ‘best for’ labels. Dell, LG, Samsung, ASUS & more.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            padding: 2rem 1.2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1320px;
+            width: 100%;
+            background: white;
+            border-radius: 36px;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
+            padding: 2rem 1.8rem 3rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0b1a33;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 1rem;
+        }
+
+        h1 small {
+            font-weight: 400;
+            font-size: 1rem;
+            color: #5b6f90;
+            background: #eef2f9;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+        }
+
+        .subhead {
+            color: #2c3e66;
+            margin: 0.5rem 0 1.8rem 0;
+            font-size: 1.1rem;
+            border-left: 4px solid #356df0;
+            padding-left: 1rem;
+            max-width: 700px;
+        }
+
+        .seo-content {
+            background: #f0f4fe;
+            border-radius: 24px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2.5rem;
+            color: #101f3c;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            border: 1px solid #dbe3f5;
+        }
+
+        .seo-content strong {
+            color: #0037b3;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            margin: 1.8rem 0 2rem;
+            background: #f9faff;
+            padding: 1rem 1.4rem;
+            border-radius: 50px;
+            align-items: center;
+            border: 1px solid #e2eaf9;
+        }
+
+        .controls label {
+            font-weight: 550;
+            color: #13294b;
+            margin-right: 0.2rem;
+        }
+
+        .controls select, .controls input {
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #ced8ec;
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .controls select:focus, .controls input:focus {
+            border-color: #1f5eff;
+            box-shadow: 0 0 0 3px rgba(31, 94, 255, 0.15);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 0.8rem;
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #bcc9e0;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1d2f50;
+            transition: 0.15s;
+        }
+
+        .reset-btn:hover {
+            background: #e4ecfe;
+            border-color: #5275d0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 0.8rem 0 1.5rem;
+            border-radius: 28px;
+            border: 1px solid #e9effa;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0,20,50,0.04);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #f0f6ff;
+            color: #10213d;
+            font-weight: 600;
+            padding: 1rem 0.8rem;
+            white-space: nowrap;
+            text-align: left;
+            border-bottom: 2px solid #d3e1f7;
+        }
+
+        td {
+            padding: 1rem 0.8rem;
+            border-bottom: 1px solid #e6edf9;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #0b1b3b;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8efff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #1a3b7a;
+            margin-left: 0.4rem;
+        }
+
+        .badge-ultrawide {
+            background: #c9dbfe;
+            color: #003994;
+        }
+
+        .badge-4k {
+            background: #d8e0ff;
+            color: #102a6b;
+        }
+
+        .best-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #0b1a33;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            letter-spacing: 0.2px;
+            background: #1f4fcf;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #021a3a;
+            white-space: nowrap;
+        }
+
+        .rating {
+            background: #fef6e0;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #523f00;
+        }
+
+        .btn-amz {
+            display: inline-block;
+            background: #ffd814;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #111;
+            text-decoration: none;
+            transition: 0.15s;
+            white-space: nowrap;
+            border: 1px solid #f3cd00;
+        }
+
+        .btn-amz:hover {
+            background: #f7ca00;
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .spec-detail {
+            font-size: 0.9rem;
+            color: #1a2e52;
+        }
+
+        .comparison-footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2.2rem;
+            font-size: 0.9rem;
+            color: #2b4770;
+        }
+
+        .affiliate-note {
+            background: #fafbff;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            border: 1px solid #dee8fc;
+        }
+
+        .hidden-row {
+            display: none;
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                padding: 1.2rem 0.8rem;
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 28px;
+            }
+            .table-wrapper {
+                border-radius: 20px;
+            }
+            td, th {
+                padding: 0.7rem 0.5rem;
+                font-size: 0.85rem;
+            }
+            .btn-amz {
+                padding: 0.2rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        🖥️ 4K vs Ultrawide for Coding
+        <small>8 monitors · hands-on</small>
+    </h1>
+    <div class="subhead">Real‑world comparison: pixel density, screen real estate, and price for developers.</div>
+
+    <!-- SEO text ~350 words -->
+    <div class="seo-content">
+        <p><strong>Which monitor helps you code faster — 4K or ultrawide?</strong> We compared eight top models: <strong>Dell U2723QE</strong> (4K, IPS Black), <strong>LG 27UK850-W</strong> (4K, USB‑C), <strong>Samsung Odyssey G7 S28AG70</strong> (4K, 144Hz), <strong>ASUS ProArt PA279CV</strong> (4K, factory calibrated), <strong>Dell U4021QW</strong> (40″ ultrawide, 5K2K), <strong>LG 34WN80C</strong> (34″ ultrawide, USB‑C), <strong>Samsung CJ791</strong> (34″ ultrawide, Thunderbolt 3), and <strong>ASUS ZenScreen MB16AC</strong> (portable 4K).</p>
+        <p>For coding, 4K monitors (27–28″) give you razor‑sharp text and four virtual windows at 150% scaling. Ultrawide (34–40″) eliminates dual‑monitor bezels and shows more code lines side‑by‑side. <strong>Our verdict?</strong> If you prioritise crispness and vertical space → 4K. If you want a seamless wide canvas with lots of horizontal panels → ultrawide. All picks are “best for” specific workflows, from full‑stack dev to data science.</p>
+        <p>Every monitor includes a <strong>Check price on Amazon</strong> button. We update pricing weekly. Affiliate links help us keep this tool free.</p>
+    </div>
+
+    <!-- interactive controls -->
+    <div class="controls">
+        <div class="filter-group">
+            <label for="typeFilter">Type</label>
+            <select id="typeFilter">
+                <option value="all">All</option>
+                <option value="4k">4K only</option>
+                <option value="ultrawide">Ultrawide only</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="sortSelect">Sort by</label>
+            <select id="sortSelect">
+                <option value="default">Default order</option>
+                <option value="price-asc">Price: low → high</option>
+                <option value="price-desc">Price: high → low</option>
+                <option value="rating">Rating (high first)</option>
+            </select>
+        </div>
+        <button class="reset-btn" id="resetFilters">↺ Reset</button>
+    </div>
+
+    <!-- comparison table -->
+    <div class="table-wrapper" id="tableWrapper">
+        <table id="monitorTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Size / Resolution</th>
+                    <th>Price (USD)</th>
+                    <th>Rating</th>
+                    <th>Best for</th>
+                    <th>Amazon</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- data injected from JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="comparison-footer">
+        <span>⭐ Ratings from TechRadar & Amazon (2025)</span>
+        <span class="affiliate-note">🔗 Affiliate links · as an Amazon Associate we earn from qualifying purchases.</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- monitor data -----
+        const products = [
+            { id: 1, name: 'Dell U2723QE', type: '4K', size: '27" 4K (3840×2160)', price: 449, rating: 4.7, bestFor: 'IPS Black · coding + design', amzQuery: 'Dell+U2723QE+4K+monitor' },
+            { id: 2, name: 'LG 27UK850-W', type: '4K', size: '27" 4K (3840×2160)', price: 379, rating: 4.5, bestFor: 'USB‑C · great value', amzQuery: 'LG+27UK850-W+4K+monitor' },
+            { id: 3, name: 'Samsung Odyssey G7 S28AG70', type: '4K', size: '28" 4K (3840×2160) 144Hz', price: 499, rating: 4.6, bestFor: '4K + 120Hz gaming/code', amzQuery: 'Samsung+Odyssey+G7+S28AG70+4K' },
+            { id: 4, name: 'ASUS ProArt PA279CV', type: '4K', size: '27" 4K (3840×2160)', price: 429, rating: 4.7, bestFor: 'Color‑accurate dev', amzQuery: 'ASUS+ProArt+PA279CV+4K' },
+            { id: 5, name: 'Dell U4021QW', type: 'Ultrawide', size: '40" 5K2K (5120×2160)', price: 1199, rating: 4.8, bestFor: 'Massive ultrawide · pro multitask', amzQuery: 'Dell+U4021QW+ultrawide+monitor' },
+            { id: 6, name: 'LG 34WN80C', type: 'Ultrawide', size: '34" UW (3440×1440)', price: 549, rating: 4.5, bestFor: 'USB‑C ultrawide · affordable', amzQuery: 'LG+34WN80C+ultrawide+monitor' },
+            { id: 7, name: 'Samsung CJ791', type: 'Ultrawide', size: '34" UW (3440×1440) Thunderbolt 3', price: 649, rating: 4.4, bestFor: 'MacBook ultrawide', amzQuery: 'Samsung+CJ791+ultrawide+Thunderbolt' },
+            { id: 8, name: 'ASUS ZenScreen MB16AC', type: '4K', size: '15.6" 4K portable', price: 299, rating: 4.1, bestFor: 'Portable 4K · travel coding', amzQuery: 'ASUS+ZenScreen+MB16AC+4K+portable' }
+        ];
+
+        const tbody = document.getElementById('tableBody');
+        const typeFilter = document.getElementById('typeFilter');
+        const sortSelect = document.getElementById('sortSelect');
+        const resetBtn = document.getElementById('resetFilters');
+
+        // store original order for default sorting
+        const defaultOrder = products.map(p => p.id);
+
+        // ----- render table based on filter + sort -----
+        function renderTable() {
+            const typeVal = typeFilter.value; // 'all', '4k', 'ultrawide'
+            const sortVal = sortSelect.value;
+
+            // 1. filter
+            let filtered = products.filter(p => {
+                if (typeVal === 'all') return true;
+                if (typeVal === '4k') return p.type === '4K';
+                if (typeVal === 'ultrawide') return p.type === 'Ultrawide';
+                return true;
+            });
+
+            // 2. sort
+            if (sortVal === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else { // 'default' – preserve original order based on defaultOrder array
+                filtered.sort((a, b) => defaultOrder.indexOf(a.id) - defaultOrder.indexOf(b.id));
+            }
+
+            // 3. build rows
+            let html = '';
+            for (const p of filtered) {
+                const badgeClass = (p.type === '4K') ? 'badge-4k' : 'badge-ultrawide';
+                const bestClass = (p.bestFor.includes('Massive') || p.bestFor.includes('pro')) ? 'best-tag' : 'badge';
+                // Amazon link: use product name + keywords
+                const amazonLink = `https://www.amazon.com/s?k=${encodeURIComponent(p.amzQuery)}&tag=1288282581282-20`;
+
+                html += `<tr>
+                    <td><span class="product
