@@ -1,0 +1,424 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Monitor Comparison: 4K vs Ultrawide for Coding | 2025</title>
+  <meta name="description" content="Compare 7 top monitors for coding: 4K vs Ultrawide. Detailed specs, ratings, pricing & best-for labels. Dell, LG, Samsung, BenQ, ASUS & more.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1300px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0b1b33;
+      letter-spacing: -0.02em;
+      border-left: 6px solid #2563eb;
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .subhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+      color: #2c3e50;
+    }
+
+    .subhead p {
+      font-size: 1.05rem;
+      max-width: 700px;
+      line-height: 1.6;
+      color: #1e293b;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      align-items: center;
+      background: white;
+      padding: 0.9rem 1.8rem;
+      border-radius: 60px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+      margin-bottom: 2rem;
+      border: 1px solid #e9edf4;
+    }
+
+    .filter-bar label {
+      font-weight: 500;
+      color: #1f2a44;
+      font-size: 0.95rem;
+    }
+
+    .filter-bar select, .filter-bar input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccd7e6;
+      border-radius: 40px;
+      background: white;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-bar select:focus, .filter-bar input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    #searchInput {
+      min-width: 180px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 20px 35px -8px rgba(0, 20, 40, 0.12);
+      border: 1px solid #eef2f8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #f8faff;
+      color: #0b2b4c;
+      font-weight: 600;
+      padding: 1rem 1rem;
+      text-align: left;
+      border-bottom: 2px solid #e2e9f3;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+    }
+
+    th:first-child {
+      border-radius: 20px 0 0 0;
+    }
+    th:last-child {
+      border-radius: 0 20px 0 0;
+    }
+
+    td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #edf2f9;
+      vertical-align: middle;
+      background: white;
+    }
+
+    tr:hover td {
+      background-color: #fafcff;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: #0b1b33;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e6edf8;
+      color: #1b3a6b;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      border-radius: 50px;
+      letter-spacing: 0.01em;
+      margin-left: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .best-tag {
+      background: #fbbf24;
+      color: #1a2d3a;
+      font-weight: 700;
+    }
+
+    .rating-stars {
+      color: #f59e0b;
+      letter-spacing: 1px;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #0b2b4c;
+    }
+
+    .price-range {
+      font-weight: 400;
+      color: #4b5e77;
+      font-size: 0.8rem;
+    }
+
+    .btn-amazon {
+      display: inline-block;
+      background: #ff9900;
+      color: #1c2b3a;
+      padding: 0.4rem 1.1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid #e48a00;
+      white-space: nowrap;
+      box-shadow: 0 2px 4px rgba(255, 153, 0, 0.2);
+    }
+
+    .btn-amazon:hover {
+      background: #e68a00;
+      transform: scale(0.98);
+      border-color: #cc7a00;
+      color: #0e1a26;
+    }
+
+    .flex-spec {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .spec-detail {
+      font-size: 0.8rem;
+      color: #3d4f68;
+    }
+
+    .no-result {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #4c637c;
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      color: #5f748e;
+      font-size: 0.9rem;
+      border-top: 1px solid #dce3ed;
+      padding-top: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1rem 0.8rem; }
+      h1 { font-size: 1.8rem; padding-left: 0.8rem; }
+      .filter-bar { border-radius: 40px; padding: 0.8rem 1.2rem; flex-wrap: wrap; }
+      #searchInput { min-width: 140px; width: 100%; }
+      .subhead { flex-direction: column; align-items: start; gap: 0.75rem; }
+    }
+
+    /* sticky first column? not needed, but */
+    .product-highlight {
+      border-left: 4px solid #2563eb;
+      background: #f9fdff;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🖥️ 4K vs Ultrawide for coding</h1>
+  <div class="subhead">
+    <p>Detailed comparison of <strong>7 top monitors</strong> — 4K crispness vs Ultrawide screen real estate. Real ratings, specs, and price ranges. Find your perfect coding companion.</p>
+  </div>
+
+  <!-- Filters & search -->
+  <div class="filter-bar">
+    <label for="typeFilter">Type</label>
+    <select id="typeFilter">
+      <option value="all">All</option>
+      <option value="4K">4K</option>
+      <option value="Ultrawide">Ultrawide</option>
+    </select>
+
+    <label for="sortSelect">Sort by</label>
+    <select id="sortSelect">
+      <option value="default">Default order</option>
+      <option value="price-asc">Price ▲</option>
+      <option value="price-desc">Price ▼</option>
+      <option value="rating">Rating ★</option>
+      <option value="resolution">Resolution</option>
+    </select>
+
+    <label for="searchInput">🔍 Search</label>
+    <input type="text" id="searchInput" placeholder="product or brand ...">
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table id="monitorTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type</th>
+          <th>Resolution / Ratio</th>
+          <th>Size</th>
+          <th>Rating</th>
+          <th>Price range</th>
+          <th>Best for</th>
+          <th>Amazon</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- data injected by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ~350 words SEO content + product names -->
+  <div style="margin-top: 2.8rem; background: #f0f5fe; padding: 1.8rem 2.2rem; border-radius: 28px; line-height: 1.65; color: #122b44; border: 1px solid #dae6f5;">
+    <h2 style="font-size: 1.6rem; font-weight: 600; margin-bottom: 1rem;">📐 4K vs Ultrawide: which one for coding?</h2>
+    <p style="margin-bottom: 1rem;"><strong>4K monitors (3840×2160)</strong> like the <strong>Dell U2723QE</strong> or <strong>LG 27UP850N</strong> deliver razor‑sharp text and generous screen space. For developers who love pixel density, multiple windows side‑by‑side without scaling issues — 4K is a classic choice. <strong>BenQ PD2705U</strong> and <strong>ASUS ProArt PA279CRV</strong> offer wide gamut and excellent ergonomics. <strong>Samsung ViewFinity S9</strong> adds smart features. However, 4K often requires scaling on 27” to avoid tiny UI.</p>
+    <p style="margin-bottom: 1rem;"><strong>Ultrawide (21:9 / 32:9)</strong> like the <strong>Dell U4025QW</strong> (40” 5K2K) or <strong>LG 34WN80C-B</strong> (34” curved) gives massive horizontal space — perfect for three‑panel code, terminal, and docs. <strong>Samsung Odyssey G9 (LC49G95T)</strong> is 49” extreme. Ultrawide reduces the need for multi‑monitor setups, and 3440×1440 provides excellent real estate with no scaling on 34”. For coding, the extra width is incredible for side‑by‑side diffs and long logs.</p>
+    <p>Our comparison includes: <strong>Dell U2723QE</strong> (4K, USB‑C hub), <strong>LG 27UP850N</strong> (4K, USB‑C 96W), <strong>Samsung ViewFinity S9</strong> (4K, smart), <strong>BenQ PD2705U</strong> (4K, designer), <strong>ASUS ProArt PA279CRV</strong> (4K, Calman), <strong>Dell U4025QW</strong> (40” 5K2K ultrawide), and <strong>LG 34WN80C-B</strong> (34” ultrawide USB‑C). All have price ranges, real ratings, and “Best for” tags. Use the filter to find your ideal monitor.</p>
+  </div>
+
+  <footer>
+    <p>Prices &amp; availability may change. Affiliate links help us keep the comparison free. 🖥️ <strong>#codemonitor</strong></p>
+  </footer>
+</div>
+
+<script>
+  (function() {
+    // ---- Product data (7 monitors) ----
+    const products = [
+      {
+        id: 1,
+        name: 'Dell U2723QE',
+        type: '4K',
+        resolution: '3840×2160',
+        size: '27" IPS Black',
+        rating: 4.7,
+        ratingStars: '★★★★★',
+        priceRange: '$530 – $620',
+        bestFor: 'Best all-round 4K for coders',
+        description: 'USB-C hub, KVM, 60Hz',
+        amazonUrl: 'https://www.amazon.com/s?k=Dell+U2723QE+4K+Monitor+Coding&tag=1288282581282-20'
+      },
+      {
+        id: 2,
+        name: 'LG 27UP850N',
+        type: '4K',
+        resolution: '3840×2160',
+        size: '27" IPS',
+        rating: 4.5,
+        ratingStars: '★★★★½',
+        priceRange: '$430 – $510',
+        bestFor: 'Best value 4K USB‑C',
+        description: '96W USB‑C, sRGB 95%',
+        amazonUrl: 'https://www.amazon.com/s?k=LG+27UP850N+4K+Monitor+Coding&tag=1288282581282-20'
+      },
+      {
+        id: 3,
+        name: 'Samsung ViewFinity S9',
+        type: '4K',
+        resolution: '3840×2160',
+        size: '27" IPS',
+        rating: 4.4,
+        ratingStars: '★★★★',
+        priceRange: '$550 – $700',
+        bestFor: 'Smart 4K with color',
+        description: 'Thunderbolt 4, matte display',
+        amazonUrl: 'https://www.amazon.com/s?k=Samsung+ViewFinity+S9+4K+Monitor&tag=1288282581282-20'
+      },
+      {
+        id: 4,
+        name: 'BenQ PD2705U',
+        type: '4K',
+        resolution: '3840×2160',
+        size: '27" IPS',
+        rating: 4.6,
+        ratingStars: '★★★★½',
+        priceRange: '$490 – $580',
+        bestFor: 'Designers & developers',
+        description: 'USB‑C 65W, KVM, AQCOLOR',
+        amazonUrl: 'https://www.amazon.com/s?k=BenQ+PD2705U+4K+monitor+coding&tag=1288282581282-20'
+      },
+      {
+        id: 5,
+        name: 'ASUS ProArt PA279CRV',
+        type: '4K',
+        resolution: '3840×2160',
+        size: '27" IPS',
+        rating: 4.7,
+        ratingStars: '★★★★★',
+        priceRange: '$500 – $600',
+        bestFor: 'Pro color accuracy',
+        description: 'Calman verified, USB‑C 96W',
+        amazonUrl: 'https://www.amazon.com/s?k=ASUS+ProArt+PA279CRV+4K+Monitor&tag=1288282581282-20'
+      },
+      {
+        id: 6,
+        name: 'Dell U4025QW',
+        type: 'Ultrawide',
+        resolution: '5120×2160',
+        size: '40" IPS Black',
+        rating: 4.8,
+        ratingStars: '★★★★★',
+        priceRange: '$1,750 – $2,050',
+        bestFor: 'Ultimate ultrawide coding',
+        description: '5K2K, 120Hz, Thunderbolt 4',
+        amazonUrl: 'https://www.amazon.com/s?k=Dell+U4025QW+ultrawide+monitor+coding&tag=1288282581282-20'
+      },
+      {
+        id: 7,
+        name: 'LG 34WN80C-B',
+        type: 'Ultrawide',
+        resolution: '3440×1440',
+        size: '34" curved IPS',
+        rating: 4.4,
+        ratingStars: '★★★★',
+        priceRange: '$600 – $780',
+        bestFor: 'Affordable ultrawide',
+        description: 'USB‑C 60Hz, sRGB 99%',
+        amazonUrl: 'https://www.amazon.com/s?k=LG+34WN80C-B+ultrawide+monitor+coding&tag=1288282581282-20'
+      }
+    ];
+
+    // reference to tbody
+    const tbody = document.getElementById('tableBody');
+    const typeFilter = document.getElementById('typeFilter');
+    const sortSelect = document.getElementById('sortSelect');
+    const searchInput = document.getElementById('searchInput');
+
+    // render
+    function renderTable(dataArray) {
+      if (!dataArray.length) {
+        tbody.innerHTML = `<tr><td colspan="8" class="no-result">No monitors match your criteria.</td></tr>`;
+        return;
+      }
+
+      let html = '';
+      dataArray.forEach((p, index) => {
+        // highlight first product (4K) and first ultrawide
+        let cls = '';
+        if (index === 0 && dataArray[0].type === '4K') cls = 'product-highlight';
+        else if (dataArray.filter(d => d.type==='Ultrawide')[0] === p) cls = 'product-highlight';
+
+        html += `<tr class="${cls}">
+          <td><span class="product-name
