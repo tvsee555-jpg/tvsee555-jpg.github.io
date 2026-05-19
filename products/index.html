@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — CodePack</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { max-width:800px; margin:0 auto; padding:40px 20px; font-family:Georgia,serif; font-size:18px; line-height:1.7; color:#222; }
+  h1 { font-size:2.2em; margin-bottom:0.3em; }
+  h2 { font-size:1.5em; margin:1.5em 0 0.5em; }
+  p { color:#555; margin-bottom:1em; }
+  .product { background:#f8f9fa; border:1px solid #ddd; border-radius:8px; padding:30px; margin:2em 0; }
+  .product h3 { font-size:1.3em; margin-bottom:0.3em; }
+  .product .desc { color:#666; margin-bottom:0.8em; font-size:0.95em; }
+  .product .price { font-size:1.3em; font-weight:bold; color:#1a1a1a; margin:0.5em 0; }
+  .btc-address { background:#fff; border:1px solid #ddd; border-radius:4px; padding:12px; font-family:monospace; font-size:0.85em; word-break:break-all; margin:0.5em 0; }
+  .btc-qr { margin:1em 0; }
+  .btc-qr img { width:200px; height:200px; border:1px solid #ddd; border-radius:4px; }
+  .btn { display:inline-block; background:#f7931a; color:#fff; padding:10px 20px; text-decoration:none; border-radius:4px; font-weight:bold; margin:0.5em 0; border:none; cursor:pointer; }
+  .btn:hover { background:#d87d0f; }
+  .btn-copy { background:#555; font-size:0.85em; padding:6px 14px; cursor:pointer; }
+  .btn-copy:hover { background:#333; }
+  .instructions { font-size:0.9em; color:#777; margin:1em 0; }
+  .footer { margin-top:3em; padding-top:2em; border-top:1px solid #eee; font-size:0.85em; color:#999; text-align:center; }
+  .footer a { color:#f7931a; }
+  .tip-section { background:#fff8f0; border:2px solid #f7931a; border-radius:8px; padding:30px; margin:3em 0; text-align:center; }
+  .tip-section h2 { margin-top:0; }
+  .copied-msg { display:none; color:#006600; font-size:0.85em; margin-top:5px; }
+  @media (prefers-color-scheme: dark) {
+    body { background:#111; color:#eee; }
+    p, .product .desc, .instructions { color:#aaa; }
+    .product { background:#1a1a1a; border-color:#333; }
+    .product .price { color:#f7931a; }
+    .btc-address { background:#222; border-color:#444; color:#eee; }
+    .tip-section { background:#1a1500; border-color:#f7931a; }
+    h1, h2, h3 { color:#eee; }
+    .btn { background:#f7931a; color:#111; }
+    .btn:hover { background:#ffa833; }
+    .btn-copy { background:#444; color:#eee; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Products</h1>
+<p>Developer tool packs designed to ship faster.</p>
+<p>Pay with Bitcoin (on-chain). No account, no KYC, no tracking.</p>
+
+<div class="product">
+  <h3>AI Dev Config Pack</h3>
+  <p class="desc">Cursor/Claude rules, MCP configs, install scripts. Ready-to-use AI development setup for Python, Rust, Go, Node, and Next.js projects.</p>
+  <p class="price">$5.00</p>
+  <div class="btc-address" id="addr-ai">bc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv</div>
+  <p class="btc-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin%3Abc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv%3Famount%3D0.00005%26label%3DAI-Config-Pack" alt="Bitcoin QR for $5 payment"></p>
+  <button class="btn btn-copy" onclick="copyAddress('addr-ai')">Copy Address</button>
+  <p id="copied-ai" class="copied-msg">Address copied!</p>
+  <p class="instructions">Send 0.00005 BTC (~$5) to the address above, then <a href="mailto:nova-ownai@wshu.net?subject=AI%20Dev%20Config%20Pack%20-%20Paid&body=TxID%3A%20%3Cyour%20transaction%20ID%3E">email the transaction ID</a> to receive your download link.</p>
+  <p><a href="ai-dev-config-pack.zip" class="btn">Download Free (Donation)</a></p>
+</div>
+
+<div class="product">
+  <h3>Docker Compose Pro Pack</h3>
+  <p class="desc">Production-grade docker-compose setups for Go, Rust, Python, Node, and Next.js with proper nginx, multi-stage builds, health checks, and .env examples.</p>
+  <p class="price">$7.00</p>
+  <div class="btc-address" id="addr-docker">bc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv</div>
+  <p class="btc-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin%3Abc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv%3Famount%3D0.00007%26label%3DDocker-Pro-Pack" alt="Bitcoin QR for $7 payment"></p>
+  <button class="btn btn-copy" onclick="copyAddress('addr-docker')">Copy Address</button>
+  <p id="copied-docker" class="copied-msg">Address copied!</p>
+  <p class="instructions">Send 0.00007 BTC (~$7) to the address above, then <a href="mailto:nova-ownai@wshu.net?subject=Docker%20Compose%20Pro%20Pack%20-%20Paid&body=TxID%3A%20%3Cyour%20transaction%20ID%3E">email the transaction ID</a> to receive your download link.</p>
+  <p><a href="docker-compose-pro-pack.zip" class="btn">Download Free (Donation)</a></p>
+</div>
+
+<div class="product">
+  <h3>Git Workflow Pack</h3>
+  <p class="desc">Conventional commits, branch naming, pre-commit/pre-push hooks, gitconfig. Standardize your team's git practices in 5 minutes.</p>
+  <p class="price">$3.00</p>
+  <div class="btc-address" id="addr-git">bc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv</div>
+  <p class="btc-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin%3Abc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv%3Famount%3D0.00003%26label%3DGit-Workflow-Pack" alt="Bitcoin QR for $3 payment"></p>
+  <button class="btn btn-copy" onclick="copyAddress('addr-git')">Copy Address</button>
+  <p id="copied-git" class="copied-msg">Address copied!</p>
+  <p class="instructions">Send 0.00003 BTC (~$3) to the address above, then <a href="mailto:nova-ownai@wshu.net?subject=Git%20Workflow%20Pack%20-%20Paid&body=TxID%3A%20%3Cyour%20transaction%20ID%3E">email the transaction ID</a> to receive your download link.</p>
+  <p><a href="git-workflow-pack.zip" class="btn">Download Free (Donation)</a></p>
+</div>
+
+<div class="tip-section">
+  <h2>Support Development</h2>
+  <p>Like the tools? Send a tip in Bitcoin. Every bit counts.</p>
+  <div class="btc-address" id="addr-tip">bc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv</div>
+  <p class="btc-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bitcoin%3Abc1qcsdcg5ecddkkf96vqnvnvax2z9j78kmqmz2rqv%3Flabel%3DCodePack-Tip" alt="Bitcoin QR for tips"></p>
+  <button class="btn btn-copy" onclick="copyAddress('addr-tip')">Copy Address</button>
+  <p id="copied-tip" class="copied-msg">Address copied!</p>
+</div>
+
+<div class="footer">
+  <a href="/">Home</a> &middot;
+  <a href="/subscribe.html">Subscribe</a> &middot;
+  <a href="https://tvsee555-jpg.github.io">Blog</a> &middot;
+  CodePack
+</div>
+
+<script>
+function copyAddress(id) {
+  var addr = document.getElementById(id).textContent.trim();
+  navigator.clipboard.writeText(addr).then(function() {
+    var msgId = 'copied-' + id.replace('addr-', '');
+    var msg = document.getElementById(msgId);
+    msg.style.display = 'block';
+    setTimeout(function() { msg.style.display = 'none'; }, 2000);
+  }).catch(function() { alert('Address: ' + addr); });
+}
+</script>
+
+</body>
+</html>
