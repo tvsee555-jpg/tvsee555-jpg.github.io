@@ -1,0 +1,27 @@
+{
+  "btc": {
+    "address": "bc1q8gdzrxv52rahyee0wglz0rarlwk726sz3cuxrm",
+    "qr": "qr_btc.png",
+    "uri": "bitcoin:bc1q8gdzrxv52rahyee0wglz0rarlwk726sz3cuxrm?label=CodePack"
+  },
+  "ltc": {
+    "address": "bc1qu2r382947lsc33k8h3u67k6d4j3ln4rsfxktfg",
+    "qr": "qr_ltc.png",
+    "uri": "litecoin:bc1qu2r382947lsc33k8h3u67k6d4j3ln4rsfxktfg?label=CodePack"
+  },
+  "eth": {
+    "address": "0x373Bd292ec6d0f9114cb592612D46fA244af43c7",
+    "qr": "qr_eth.png",
+    "uri": "ethereum:0x373Bd292ec6d0f9114cb592612D46fA244af43c7?value=0"
+  },
+  "sol": {
+    "address": "2CUhiWic7B3dajCwNXViy2kjoC2PexYGLWf7gdwXzf1H",
+    "qr": "qr_sol.png",
+    "uri": "2CUhiWic7B3dajCwNXViy2kjoC2PexYGLWf7gdwXzf1H"
+  },
+  "xmr": {
+    "address": "REQUIRES_MONERO_CLI",
+    "qr": "qr_xmr.png",
+    "uri": "REQUIRES_MONERO_CLI"
+  }
+}
