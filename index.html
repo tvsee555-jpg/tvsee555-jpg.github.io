@@ -4,123 +4,721 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CodePack — Developer Tool Packs</title>
-<meta name="description" content="Ready-to-use developer tool packs. Pay with Bitcoin, Litecoin, Ethereum, Solana, or USDC. AI dev configs, Docker setups, Git workflows.">
+<meta name="description" content="Ready-to-use developer tool packs for AI coding, Docker, and Git workflows. Pay with BTC, LTC, ETH, SOL, or USDC. No account, no KYC, no tracking.">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#0d1117; color:#c9d1d9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu, sans-serif; line-height:1.6; }
-.container { max-width:900px; margin:0 auto; padding:40px 20px; }
-h1 { font-size:2.5em; font-weight:700; color:#f0f6fc; margin-bottom:8px; letter-spacing:-0.5px; }
-h2 { font-size:1.5em; font-weight:600; color:#f0f6fc; margin:48px 0 24px; }
-p.subtitle { font-size:1.1em; color:#8b949e; margin-bottom:40px; }
-.products { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin-bottom:20px; }
-.product { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:24px; transition:border-color .2s; }
-.product:hover { border-color:#58a6ff; }
-.product h3 { font-size:1.2em; color:#f0f6fc; margin-bottom:8px; }
-.product p { color:#8b949e; font-size:.9em; margin-bottom:12px; min-height:40px; }
-.product .price { font-size:1.4em; font-weight:700; color:#58a6ff; margin-bottom:16px; }
-.product .actions { display:flex; gap:10px; flex-wrap:wrap; }
-.product .actions a { display:inline-block; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:600; font-size:.9em; }
-.btn-buy { background:#238636; color:#fff; }
-.btn-buy:hover { background:#2ea043; }
-.btn-free { background:#21262d; color:#c9d1d9; border:1px solid #30363d; }
-.btn-free:hover { background:#30363d; }
-.payment { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:24px; margin-top:8px; }
-.payment h3 { font-size:1.1em; color:#f0f6fc; margin-bottom:16px; }
-.payment p { color:#8b949e; font-size:.9em; margin-bottom:16px; }
-.coins { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
-.coin { background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:12px; text-align:center; cursor:pointer; transition:border-color .2s; }
-.coin:hover { border-color:#58a6ff; }
-.coin .symbol { font-size:1.1em; font-weight:700; color:#f0f6fc; }
-.coin .addr { font-size:.7em; color:#8b949e; word-break:break-all; margin-top:4px; display:none; }
-.coin:hover .addr { display:block; }
-.coin .qr { width:120px; height:120px; margin:8px auto; display:block; border-radius:4px; }
-.coin .copy-btn { background:#21262d; border:1px solid #30363d; color:#c9d1d9; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:.8em; margin-top:4px; }
-.coin .copy-btn:hover { background:#30363d; }
-.steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:24px 0; }
-.step { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:16px; }
-.step .num { display:inline-block; background:#238636; color:#fff; width:28px; height:28px; border-radius:50%; text-align:center; line-height:28px; font-weight:700; font-size:.85em; margin-bottom:8px; }
-.step h4 { color:#f0f6fc; font-size:.95em; margin-bottom:4px; }
-.step p { color:#8b949e; font-size:.85em; }
-.footer { margin-top:48px; padding-top:24px; border-top:1px solid #30363d; text-align:center; color:#8b949e; font-size:.85em; }
-.footer a { color:#58a6ff; text-decoration:none; }
-.footer a:hover { text-decoration:underline; }
-.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:12px 24px; border-radius:8px; font-size:.9em; opacity:0; transition:opacity .3s; pointer-events:none; }
-.toast.show { opacity:1; }
-@media(max-width:600px) {
-  .products { grid-template-columns:1fr; }
-  .coins { grid-template-columns:repeat(2,1fr); }
-  h1 { font-size:1.8em; }
+:root {
+  --bg: #0a0e14;
+  --bg-card: #11161e;
+  --bg-card-hover: #161c27;
+  --border: #1e2837;
+  --text: #b3b8c5;
+  --text-bright: #e6e9ef;
+  --text-muted: #6b7482;
+  --accent: #67b0f1;
+  --accent-dim: #3a7bbd;
+  --green: #7ecb7e;
+  --green-bg: #1a332a;
+  --orange: #e6b450;
+  --red: #ea6a6a;
+  --radius: 12px;
+  --font-heading: 'Courier New', 'Consolas', 'Liberation Mono', monospace;
+  --font-body: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'Consolas', 'Courier New', 'Liberation Mono', monospace;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1000px; margin: 0 auto; padding: 60px 24px; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 60px; border-bottom: 1px solid var(--border); padding-bottom: 40px; }
+.logo {
+  font-family: var(--font-heading);
+  font-size: 2.8em;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+}
+.logo span { color: var(--accent); }
+.logo-sub {
+  font-size: 1em;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-family: var(--font-body);
+  font-style: italic;
+}
+.badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: .75em;
+  font-family: var(--font-mono);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.badge.sol { border-color: #9945FF; color: #9945FF; }
+.badge.btc { border-color: var(--orange); color: var(--orange); }
+.badge.eth { border-color: #8b8bfa; color: #8b8bfa; }
+
+/* Products */
+.products { display: grid; gap: 24px; margin-bottom: 48px; }
+.product {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color .2s, background .2s;
+}
+.product:hover { border-color: var(--accent-dim); background: var(--bg-card-hover); }
+.product-header {
+  padding: 24px 28px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.product-info h3 {
+  font-family: var(--font-heading);
+  font-size: 1.3em;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.product-info p {
+  font-size: .9em;
+  color: var(--text-muted);
+  max-width: 450px;
+}
+.product-price {
+  font-family: var(--font-mono);
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+}
+.product-price small {
+  font-size: .5em;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Preview tabs */
+.preview {
+  border-top: 1px solid var(--border);
+  background: #080c12;
+}
+.preview-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.preview-tab {
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: .78em;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.preview-tab:hover { color: var(--text-bright); }
+.preview-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.preview-body {
+  padding: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .35s ease;
+}
+.preview-body.open { max-height: 400px; }
+.preview-body pre {
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: .78em;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+  margin: 0;
+}
+.preview-body .tree {
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: .78em;
+  line-height: 1.8;
+  color: var(--text);
+}
+.tree .dir { color: var(--accent); }
+.tree .file { color: var(--text-muted); }
+.tree .indent { padding-left: 20px; }
+.code-kw { color: #c792ea; }
+.code-str { color: #c3e88d; }
+.code-cmt { color: #546e7a; font-style: italic; }
+.code-fn { color: #82aaff; }
+.code-num { color: #f78c6c; }
+.code-op { color: #89ddff; }
+.code-builtin { color: #ffcb6b; }
+
+/* Actions */
+.product-actions {
+  padding: 16px 28px 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-size: .85em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .15s;
+  border: none;
+  cursor: pointer;
+}
+.btn-buy {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+.btn-buy:hover { background: #244d3a; }
+.btn-free {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-free:hover { color: var(--text-bright); border-color: var(--accent-dim); }
+
+/* Separator */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.2em;
+  color: var(--text-bright);
+  margin: 48px 0 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::before {
+  content: '//';
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: .85em;
+}
+
+/* Steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0 48px;
+}
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+}
+.step .num {
+  font-family: var(--font-mono);
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--accent-dim);
+  margin-bottom: 8px;
+}
+.step h4 {
+  font-family: var(--font-heading);
+  color: var(--text-bright);
+  font-size: 1em;
+  margin-bottom: 6px;
+}
+.step p { color: var(--text-muted); font-size: .88em; }
+
+/* Payment */
+#payment {
+  scroll-margin-top: 20px;
+}
+.selected-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .85em;
+  color: var(--accent);
+  background: var(--bg-card);
+  border: 1px solid var(--accent-dim);
+  padding: 6px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.payment {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 48px;
+}
+.payment h3 {
+  font-family: var(--font-heading);
+  color: var(--text-bright);
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.payment p { color: var(--text-muted); font-size: .88em; margin-bottom: 20px; }
+.coins {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.coin {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: border-color .2s;
+  cursor: default;
+}
+.coin:hover { border-color: var(--accent-dim); }
+.coin .symbol {
+  font-family: var(--font-heading);
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+.coin .name { font-size: .8em; color: var(--text-muted); margin-bottom: 8px; }
+.coin .qr { width: 120px; height: 120px; margin: 8px auto; display: block; border-radius: 4px; }
+.coin .addr {
+  font-size: .65em;
+  color: var(--text-muted);
+  word-break: break-all;
+  margin: 6px 0;
+  font-family: var(--font-mono);
+  display: none;
+}
+.coin:hover .addr { display: block; }
+.coin .copy-btn {
+  font-family: var(--font-mono);
+  font-size: .75em;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+.coin .copy-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+
+/* Footer */
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .85em;
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green-bg);
+  color: var(--green);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: .85em;
+  opacity: 0;
+  transition: opacity .25s;
+  pointer-events: none;
+  border: 1px solid var(--green);
+}
+.toast.show { opacity: 1; }
+
+/* Responsive */
+@media(max-width: 768px) {
+  .container { padding: 36px 16px; }
+  .logo { font-size: 2em; }
+  .steps { grid-template-columns: 1fr; }
+  .coins { grid-template-columns: repeat(2, 1fr); }
+  .product-header { flex-direction: column; }
+}
+
+/* Crypto ticker placeholder */
+.ticker-bar {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: .75em;
+  color: var(--text-muted);
+}
+.ticker-item { display: flex; align-items: center; gap: 4px; }
+.ticker-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.ticker-dot.up { background: var(--green); }
+.ticker-dot.down { background: var(--red); }
+
+/* Expand buttons */
+.expand-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: var(--accent-dim);
+  font-family: var(--font-mono);
+  font-size: .78em;
+  cursor: pointer;
+  transition: color .15s;
+}
+.expand-btn:hover { color: var(--accent); }
+.expand-arrow { transition: transform .2s; display: inline-block; }
+.expand-arrow.open { transform: rotate(90deg); }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>CodePack</h1>
-<p class="subtitle">Developer tool packs for people who build things. Pay with crypto — no account, no KYC, no tracking.</p>
-
-<div class="products">
-  <div class="product">
-    <h3>AI Dev Config Pack</h3>
-    <p>Cursor/Claude rules, MCP configs, install scripts for Python, Rust, Go, Node, Next.js.</p>
-    <div class="price">$5.00</div>
-    <div class="actions">
-      <a class="btn-buy" href="#payment" onclick="selectPack('AI Dev Config Pack',5)">Buy with Crypto</a>
-      <a class="btn-free" href="products/ai-dev-config-pack.zip" download>Download Free</a>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo"><span>C</span>odePack</div>
+    <p class="logo-sub">Developer tool packs for people who build things.</p>
+    <div class="badges">
+      <span class="badge btc">BTC</span>
+      <span class="badge">LTC</span>
+      <span class="badge eth">ETH</span>
+      <span class="badge sol">SOL</span>
+      <span class="badge eth">USDC</span>
+      <span class="badge">No KYC</span>
+      <span class="badge">No Account</span>
     </div>
   </div>
-  <div class="product">
-    <h3>Docker Compose Pro Pack</h3>
-    <p>Production docker-compose stacks for Python, Node, Go, Rust, Next.js with health checks.</p>
-    <div class="price">$7.00</div>
-    <div class="actions">
-      <a class="btn-buy" href="#payment" onclick="selectPack('Docker Compose Pro Pack',7)">Buy with Crypto</a>
-      <a class="btn-free" href="products/docker-compose-pro-pack.zip" download>Download Free</a>
+
+  <!-- Products -->
+  <div class="products">
+
+    <!-- Pack 1: AI Dev Config -->
+    <div class="product" data-pack="ai-dev-config" data-price="5">
+      <div class="product-header">
+        <div class="product-info">
+          <h3>AI Dev Config Pack</h3>
+          <p>5 stack-specific .cursorrules files + CLAUDE.md template + MCP server configs + auto-installer for Python, Rust, Go, Node, and Next.js projects.</p>
+        </div>
+        <div class="product-price">$5 <small>USD</small></div>
+      </div>
+      <div class="preview">
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-preview="ai-tree" onclick="switchPreview('ai-dev-config','tree',this)">📁 Files</button>
+          <button class="preview-tab" data-preview="ai-install" onclick="switchPreview('ai-dev-config','install',this)">install.sh</button>
+          <button class="preview-tab" data-preview="ai-rules" onclick="switchPreview('ai-dev-config','rules',this)">.cursorrules</button>
+        </div>
+        <div id="ai-dev-config-tree" class="preview-body open">
+          <div class="tree">
+            <span class="dir">ai-dev-config-pack/</span><br>
+            <span class="indent"><span class="file">├── install.sh</span> &lt;— Auto-detects your stack</span><br>
+            <span class="indent"><span class="file">├── CLAUDE.md</span> &lt;— Project context template</span><br>
+            <span class="indent"><span class="file">├── nextjs-typescript.cursorrules</span></span><br>
+            <span class="indent"><span class="file">├── python-fastapi.cursorrules</span></span><br>
+            <span class="indent"><span class="file">├── go-server.cursorrules</span></span><br>
+            <span class="indent"><span class="file">├── rust-cli.cursorrules</span></span><br>
+            <span class="indent"><span class="file">├── node-express.cursorrules</span></span><br>
+            <span class="indent"><span class="file">├── .gitignore</span></span><br>
+            <span class="indent"><span class="file">└── mcp-configs/</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;&nbsp;├── context7-mcp.json</span></span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;&nbsp;└── filesystem-mcp.json</span></span></span>
+          </div>
+        </div>
+        <div id="ai-dev-config-install" class="preview-body">
+<pre><span class="code-cmt">#!/usr/bin/env bash</span>
+<span class="code-kw">set</span> -euo pipefail
+
+SCRIPT_DIR=<span class="code-str">"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"</span>
+
+<span class="code-cmt"># Detects your project type automatically</span>
+detect_stack() {
+    <span class="code-kw">local</span> files=(<span class="code-str">"$1"</span>/*)
+    <span class="code-kw">local</span> has_package_json=<span class="code-builtin">false</span>
+    <span class="code-kw">local</span> has_requirements=<span class="code-builtin">false</span>
+    <span class="code-kw">local</span> has_go_mod=<span class="code-builtin">false</span>
+    <span class="code-kw">local</span> has_cargo=<span class="code-builtin">false</span>
+
+    <span class="code-kw">for</span> f <span class="code-kw">in</span> <span class="code-str">"$1"</span>/*; <span class="code-kw">do</span>
+        <span class="code-kw">case</span> <span class="code-str">"$(basename "$f")"</span> <span class="code-kw">in</span>
+            package.json) has_package_json=<span class="code-builtin">true</span> ;;
+            go.mod) has_go_mod=<span class="code-builtin">true</span> ;;
+            Cargo.toml) has_cargo=<span class="code-builtin">true</span> ;;
+        <span class="code-kw">esac</span>
+    <span class="code-kw">done</span>
+}
+
+STACK=$(detect_stack <span class="code-str">"$TARGET_DIR"</span>)</pre>
+        </div>
+        <div id="ai-dev-config-rules" class="preview-body">
+<pre><span class="code-cmt"># Next.js 14+ / TypeScript — 40+ rules</span>
+<span class="code-op">-</span> Use App Router (<span class="code-str">"app/"</span>) over Pages Router
+<span class="code-op">-</span> Server Components <span class="code-kw">by</span> default; 'use client' <span class="code-kw">for</span> interactivity
+<span class="code-op">-</span> Zod <span class="code-kw">for</span> API input validation
+<span class="code-op">-</span> Prisma <span class="code-kw">as</span> ORM; raw SQL <span class="code-kw">for</span> complex queries
+<span class="code-op">-</span> Shadcn UI <span class="code-kw">for</span> component library
+<span class="code-op">-</span> Use Server Actions <span class="code-kw">for</span> form submissions
+<span class="code-op">-</span> Error boundaries <span class="code-kw">at</span> route segment level
+<span class="code-op">-</span> ...
+
+<span class="code-cmt"># Python / FastAPI — 40+ rules</span>
+<span class="code-op">-</span> Pydantic v2 models <span class="code-kw">for</span> request/response
+<span class="code-op">-</span> SQLAlchemy 2.0 async session pattern
+<span class="code-op">-</span> Alembic <span class="code-kw">for</span> migrations
+<span class="code-op">-</span> Repository pattern <span class="code-kw">for</span> data access
+<span class="code-op">-</span> Dependency injection <span class="code-kw">for</span> services
+<span class="code-op">-</span> ...
+
+<span class="code-cmt"># Go / Rust / Express — same depth, 40+ rules each</span></pre>
+        </div>
+      </div>
+      <div class="product-actions">
+        <a class="btn btn-buy" href="#payment" onclick="selectPack('AI Dev Config Pack',5)">⬩ Buy with Crypto</a>
+        <a class="btn btn-free" href="products/ai-dev-config-pack.zip" download>⬩ Download Free</a>
+      </div>
+    </div>
+
+    <!-- Pack 2: Docker Compose Pro -->
+    <div class="product" data-pack="docker-pro" data-price="7">
+      <div class="product-header">
+        <div class="product-info">
+          <h3>Docker Compose Pro Pack</h3>
+          <p>5 production-ready Docker stacks — Python, Node, Go, Rust, Next.js — each with PostgreSQL 16, Redis 7, Nginx, Mailpit, health checks, and multi-stage builds.</p>
+        </div>
+        <div class="product-price">$7 <small>USD</small></div>
+      </div>
+      <div class="preview">
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-preview="dc-tree" onclick="switchPreview('dc','tree',this)">📁 Files</button>
+          <button class="preview-tab" data-preview="dc-yml" onclick="switchPreview('dc','yml',this)">docker-compose.yml</button>
+          <button class="preview-tab" data-preview="dc-make" onclick="switchPreview('dc','make',this)">Makefile</button>
+        </div>
+        <div id="dc-tree" class="preview-body open">
+          <div class="tree">
+            <span class="dir">docker-compose-pro-pack/</span><br>
+            <span class="indent"><span class="file">├── python-fastapi/</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── docker-compose.yml</span> ← Full stack</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── Dockerfile</span> — Multi-stage</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── nginx.conf</span> — Reverse proxy</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── .env.example</span></span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;└── Makefile</span> — make up/test/prod</span></span><br>
+            <span class="indent"><span class="file">├── node-express/</span> &lt;— Same services</span><br>
+            <span class="indent"><span class="file">├── go-server/</span> &lt;— Different ports</span><br>
+            <span class="indent"><span class="file">├── rust-server/</span> &lt;— Unique configs</span><br>
+            <span class="indent"><span class="file">└── nextjs-fullstack/</span></span>
+          </div>
+        </div>
+        <div id="dc-yml" class="preview-body">
+<pre><span class="code-kw">version</span>: <span class="code-str">"3.9"</span>
+
+<span class="code-kw">services</span>:
+  <span class="code-fn">api</span>:
+    build:
+      context: <span class="code-str">.</span>
+      dockerfile: <span class="code-fn">Dockerfile</span>
+    ports:
+      - <span class="code-str">"8000:8000"</span>
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    deploy:
+      <span class="code-kw">resources</span>:
+        limits:
+          cpus: <span class="code-str">"1.0"</span>
+          memory: <span class="code-num">512</span>M
+
+  <span class="code-fn">db</span>:
+    image: <span class="code-str">postgres:16-alpine</span>
+    healthcheck:
+      test: [<span class="code-str">"CMD-SHELL"</span>, <span class="code-str">"pg_isready"</span>]
+
+  <span class="code-fn">redis</span>:
+    image: <span class="code-str">redis:7-alpine</span>
+
+  <span class="code-fn">nginx</span>:
+    image: <span class="code-str">nginx:alpine</span>
+
+  <span class="code-fn">mailpit</span>:
+    image: <span class="code-str">axllent/mailpit:latest</span></pre>
+        </div>
+        <div id="dc-make" class="preview-body">
+<pre><span class="code-cmt"># One-command operations</span>
+<span class="code-builtin">.PHONY</span>: up down logs test prod
+
+<span class="code-fn">up</span>:
+    docker compose up -d --build
+
+<span class="code-fn">down</span>:
+    docker compose down
+
+<span class="code-fn">logs</span>:
+    docker compose logs -f api
+
+<span class="code-fn">test</span>:
+    docker compose run --rm api pytest
+
+<span class="code-fn">prod</span>:
+    docker compose -f docker-compose.yml up -d --build</pre>
+        </div>
+      </div>
+      <div class="product-actions">
+        <a class="btn btn-buy" href="#payment" onclick="selectPack('Docker Compose Pro Pack',7)">⬩ Buy with Crypto</a>
+        <a class="btn btn-free" href="products/docker-compose-pro-pack.zip" download>⬩ Download Free</a>
+      </div>
+    </div>
+
+    <!-- Pack 3: Git Workflow -->
+    <div class="product" data-pack="git-workflow" data-price="3">
+      <div class="product-header">
+        <div class="product-info">
+          <h3>Git Workflow Pack</h3>
+          <p>65+ production git aliases, 4 pre-commit hooks, conventional commit enforcement, branch naming conventions, and .gitconfig with diff/merge tuning.</p>
+        </div>
+        <div class="product-price">$3 <small>USD</small></div>
+      </div>
+      <div class="preview">
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-preview="git-tree" onclick="switchPreview('git','tree',this)">📁 Files</button>
+          <button class="preview-tab" data-preview="git-aliases" onclick="switchPreview('git','aliases',this)">Aliases</button>
+          <button class="preview-tab" data-preview="git-hooks" onclick="switchPreview('git','hooks',this)">pre-commit</button>
+        </div>
+        <div id="git-tree" class="preview-body open">
+          <div class="tree">
+            <span class="dir">git-workflow-pack/</span><br>
+            <span class="indent"><span class="file">├── .gitconfig</span> &lt;— 65+ aliases</span><br>
+            <span class="indent"><span class="file">├── setup.sh</span> &lt;— One-command install</span><br>
+            <span class="indent"><span class="file">├── .githooks/</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── pre-commit</span> &lt;— Blocks debuggers, large files</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── commit-msg</span> &lt;— Enforces conventional commits</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;├── pre-push</span> &lt;— Validates branch names</span></span><br>
+            <span class="indent"><span class="indent"><span class="file">&nbsp;&nbsp;└── prepare-commit-msg</span></span></span><br>
+            <span class="indent"><span class="file">├── conventional-commits.md</span></span><br>
+            <span class="indent"><span class="file">└── branch-naming.md</span></span>
+          </div>
+        </div>
+        <div id="git-aliases" class="preview-body">
+<pre><span class="code-cmt"># Status & Info</span>
+  <span class="code-builtin">st</span>  = status -sb
+  <span class="code-builtin">lg</span>  = <span class="code-kw">log</span> --graph --oneline -20
+  <span class="code-builtin">who</span> = shortlog -sne --all
+
+<span class="code-cmt"># Branch Operations</span>
+  <span class="code-builtin">co</span>   = checkout
+  <span class="code-builtin">cob</span>  = checkout -b
+  <span class="code-builtin">brd</span>  = branch -d
+  <span class="code-builtin">cleanup</span> = !git branch --merged | xargs git branch -d
+
+<span class="code-cmt"># Commit & Amend</span>
+  <span class="code-builtin">cia</span>   = commit --amend --no-edit
+  <span class="code-builtin">undo</span>  = reset --soft HEAD~1
+  <span class="code-builtin">fixup</span> = commit --fixup
+
+<span class="code-cmt"># Sync</span>
+  <span class="code-builtin">up</span>   = !git fetch --all --prune && git pull --rebase
+  <span class="code-builtin">psf</span>  = push --force-with-lease
+
+<span class="code-cmt"># Stash</span>
+  <span class="code-builtin">sh</span>   = stash
+  <span class="code-builtin">shl</span>  = stash list
+  <span class="code-builtin">shs</span>  = stash show -p
+
+<span class="code-cmt"># Utility</span>
+  <span class="code-builtin">nuke</span>     = !git clean -dfx && git reset --hard
+  <span class="code-builtin">today</span>    = !git log --since=00:00 --author=<span class="code-str">"$(git config user.name)"</span>
+  <span class="code-builtin">alias</span>    = !git config --list | grep <span class="code-str">'alias\.'</span> | sort</pre>
+        </div>
+        <div id="git-hooks" class="preview-body">
+<pre><span class="code-cmt">#!/bin/bash</span>
+<span class="code-cmt"># Blocks debugger statements, merge conflicts, large files</span>
+
+<span class="code-builtin">for</span> file <span class="code-kw">in</span> $(git diff --cached --name-only); <span class="code-kw">do</span>
+    <span class="code-cmt"># No debugger statements</span>
+    <span class="code-kw">if</span> grep -q <span class="code-str">"debugger;"</span> <span class="code-str">"$file"</span>; <span class="code-kw">then</span>
+        echo <span class="code-str">"✗ debugger; found in $file"</span>
+        exit <span class="code-num">1</span>
+    <span class="code-kw">fi</span>
+
+    <span class="code-cmt"># No merge conflicts</span>
+    <span class="code-kw">if</span> grep -q <span class="code-str">"&lt;&lt;&lt;&lt;&lt;&lt;&lt;"</span> <span class="code-str">"$file"</span>; <span class="code-kw">then</span>
+        echo <span class="code-str">"✗ Merge conflict markers in $file"</span>
+        exit <span class="code-num">1</span>
+    <span class="code-kw">fi</span>
+<span class="code-kw">done</span>
+
+<span class="code-cmt"># Warn about TODOs (non-blocking)</span>
+git diff --cached | grep <span class="code-str">"TODO\|FIXME"</span> && echo <span class="code-str">"⚠ TODO/FIXME found"</span></pre>
+        </div>
+      </div>
+      <div class="product-actions">
+        <a class="btn btn-buy" href="#payment" onclick="selectPack('Git Workflow Pack',3)">⬩ Buy with Crypto</a>
+        <a class="btn btn-free" href="products/git-workflow-pack.zip" download>⬩ Download Free</a>
+      </div>
     </div>
   </div>
-  <div class="product">
-    <h3>Git Workflow Pack</h3>
-    <p>Conventional commits, pre-commit hooks, branch naming conventions, and gitconfig.</p>
-    <div class="price">$3.00</div>
-    <div class="actions">
-      <a class="btn-buy" href="#payment" onclick="selectPack('Git Workflow Pack',3)">Buy with Crypto</a>
-      <a class="btn-free" href="products/git-workflow-pack.zip" download>Download Free</a>
+
+  <!-- How It Works -->
+  <div class="section-title">How It Works</div>
+  <div class="steps">
+    <div class="step">
+      <div class="num">01</div>
+      <h4>Pick a Pack</h4>
+      <p>Choose any product above. Pay with the crypto you already hold — no credit card, no account needed.</p>
+    </div>
+    <div class="step">
+      <div class="num">02</div>
+      <h4>Send Payment</h4>
+      <p>Send the exact amount to the address shown. Any of 5 chains accepted — BTC, LTC, ETH, SOL, USDC.</p>
+    </div>
+    <div class="step">
+      <div class="num">03</div>
+      <h4>Get the Pack</h4>
+      <p>Our system detects the transaction within minutes. You get a download link — or grab it free right now.</p>
     </div>
   </div>
-</div>
 
-<h2>How It Works</h2>
-<div class="steps">
-  <div class="step">
-    <div class="num">1</div>
-    <h4>Pick a Pack</h4>
-    <p>Choose any product above. Pay with the crypto you already hold.</p>
+  <!-- Payment -->
+  <div class="section-title" id="payment">Pay with Crypto</div>
+  <div class="payment">
+    <div id="selected-badge" class="selected-badge">No pack selected</div>
+    <p>Send the exact amount to any address below. QR codes scan directly from your wallet app.</p>
+    <div class="coins" id="coin-list"></div>
   </div>
-  <div class="step">
-    <div class="num">2</div>
-    <h4>Send Payment</h4>
-    <p>Send the exact amount to the address shown. Any of 5 chains accepted.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><a href="products/">All Products</a> &middot; <a href="sitemap.xml">Sitemap</a> &middot; <a href="rss.xml">RSS</a> &middot; <a href="robots.txt">robots.txt</a> &middot; <a href="subscribe.html">Subscribe</a></p>
+    <p style="margin-top: 8px;">CodePack &mdash; Accepts BTC &middot; LTC &middot; ETH &middot; SOL &middot; USDC</p>
   </div>
-  <div class="step">
-    <div class="num">3</div>
-    <h4>Get Download Link</h4>
-    <p>Our system detects the transaction and you get access within minutes.</p>
-  </div>
-</div>
-
-<h2 id="payment">Pay with Crypto</h2>
-<div id="selected-pack" style="color:#8b949e;font-size:.9em;margin-bottom:16px;"></div>
-
-<div class="payment">
-  <h3>Choose Your Coin</h3>
-  <p>Send the total to any address below. QR codes scan directly from your wallet app.</p>
-  <div class="coins" id="coin-list"></div>
-</div>
-
-<div class="footer">
-  <p><a href="products/">All Products</a> &middot; <a href="sitemap.xml">Sitemap</a> &middot; <a href="subscribe.html">Subscribe</a></p>
-  <p style="margin-top:8px;">CodePack &mdash; Accepts BTC, LTC, ETH, SOL, USDC.</p>
-</div>
 
 </div>
 
@@ -134,10 +732,15 @@ const wallets = {
   sol: { symbol:"SOL", name:"Solana", address:"2CUhiWic7B3dajCwNXViy2kjoC2PexYGLWf7gdwXzf1H", qr:"products/qr/qr_sol.png" },
   usdc: { symbol:"USDC", name:"USDC (Ethereum)", address:"0x373Bd292ec6d0f9114cb592612D46fA244af43c7", qr:"products/qr/qr_eth.png" },
 };
+let selectedPack = null;
+let selectedPrice = null;
 
-function selectPack(name) {
-  document.getElementById("selected-pack").innerHTML =
-    '<strong style="color:#f0f6fc;">Selected:</strong> ' + name;
+function selectPack(name, price) {
+  selectedPack = name;
+  selectedPrice = price;
+  var badge = document.getElementById("selected-badge");
+  badge.textContent = "Selected: " + name + " ($" + price + ")";
+  document.getElementById("payment").scrollIntoView({ behavior: "smooth" });
 }
 
 function copyAddress(addr) {
@@ -158,13 +761,27 @@ function renderCoins() {
     div.className = "coin";
     div.innerHTML =
       '<div class="symbol">' + w.symbol + '</div>' +
-      '<div style="font-size:.8em;color:#8b949e;">' + w.name + '</div>' +
+      '<div class="name">' + w.name + '</div>' +
       '<img class="qr" src="' + w.qr + '" alt="' + w.symbol + ' QR" loading="lazy">' +
       '<div class="addr">' + w.address + '</div>' +
-      '<button class="copy-btn" onclick="copyAddress(\'' + w.address + '\')">Copy Address</button>';
+      '<button class="copy-btn" onclick="copyAddress(\'' + w.address + '\')">Copy</button>';
     list.appendChild(div);
   });
 }
+
+function switchPreview(pack, tab, btn) {
+  var parent = btn.closest('.product');
+  var tabs = parent.querySelectorAll('.preview-tab');
+  tabs.forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var bodies = parent.querySelectorAll('.preview-body');
+  bodies.forEach(function(b) { b.classList.remove('open'); });
+
+  var target = document.getElementById(pack + '-' + tab);
+  if (target) target.classList.add('open');
+}
+
 renderCoins();
 </script>
 </body>
