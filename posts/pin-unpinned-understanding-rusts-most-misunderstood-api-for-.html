@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pin Unpinned: Understanding Rust's Most Misunderstood API for Safe Async State Machines</title>
+<style>
+  body { max-width:740px; margin:40px auto; padding:0 20px; font-family:Georgia,serif; font-size:18px; line-height:1.7; color:#222; }
+  h1 { font-size:2em; line-height:1.2; }
+  h2 { margin-top:2em; border-bottom:2px solid #eee; padding-bottom:8px; }
+  a { color:#06c; }
+  code { background:#f4f4f4; padding:2px 6px; border-radius:3px; font-size:.9em; }
+  .back { font-size:.9em; margin-bottom:2em; }
+</style>
+</head>
+<body>
+<p class="back"><a href="/">Back to CodePack</a></p>
+<h3>Pin Unpinned: Understanding Rust's Most Misunderstood API for Safe Async State Machines</h3>
+<p>If you've written any nontrivial async Rust, you've likely hit a wall with <code>Pin</code>. The compiler tells you something is <code>!Unpin</code>, you add <code>Box::pin</code>, and move on without fully understanding why. This isn't your fault—the API is genuinely tricky, and most explanations skip the concrete mechanics.</p>
+<p>Let's fix that. By the end of this, you'll understand exactly what <code>Pin</code> does, why async state machines require it, and how to work with <code>Pin&lt;&amp;mut T&gt;</code> safely in production code.</p>
+<hr />
+<h4>The Core Problem: Self-Referential Structs</h4>
+<p>Async Rust compiles each <code>async fn</code> into a state machine—a struct that holds all local variables across await points. The issue arises when a local variable borrows another local variable.</p>
+<p>Consider this async function:</p>
+<pre class="codehilite"><code class="language-rust">async fn example() {
+    let data = vec![1, 2, 3];
+    let slice = &amp;data[..]; // borrows data
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    println!(&quot;{:?}&quot;, slice);
+}
+</code></pre>
+
+<p>The generated state machine looks roughly like:</p>
+<pre class="codehilite"><code class="language-rust">struct ExampleStateMachine {
+    state: u8,
+    data: Vec&lt;i32&gt;,
+    slice: &amp;'??? [i32], // lifetime problem
+}
+</code></pre>
+
+<p>When the future is moved after being polled, <code>data</code> shifts in memory. Now <code>slice</code> points to the old location—use-after-free waiting to happen. The compiler must prevent this.</p>
+<hr />
+<h4>Enter Pin: A Contract, Not a Mechanism</h4>
+<p><code>Pin</code> is a wrapper around a pointer that guarantees the pointee will not move. It doesn't relocate data; it restricts how you can access it. The guarantee is:</p>
+<ul>
+<li>If <code>T: !Unpin</code>, you can never get <code>&amp;mut T</code> from a <code>Pin&lt;&amp;mut T&gt;</code> (unless through unsafe).</li>
+<li>The pointee stays at its memory address for the lifetime of the Pin.</li>
+</ul>
+<p>For <code>Unpin</code> types (most types), <code>Pin</code> does nothing—you can call <code>Pin::new()</code> and get a mutable reference freely. The magic is only for types that opt out via <code>!Unpin</code>.</p>
+<p>This is compiler-enforced documentation: "This value must not move."</p>
+<hr />
+<h4>How Async State Machines Become !Unpin</h4>
+<p>The Rust compiler generates <code>!Unpin</code> for futures that contain self-references. You can verify this:</p>
+<pre class="codehilite"><code class="language-rust">use std::pin::Pin;
+use std::marker::PhantomPinned;
+
+fn assert_unpin&lt;T: Unpin&gt;() {}
+
+async fn self_referential() {
+    let x = 42;
+    let rx = &amp;x;
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    println!(&quot;{}&quot;, rx);
+}
+
+// This won't compile:
+// assert_unpin::&lt;typeof(self_referential())&gt;();
+</code></pre>
+
+<p>Why <code>PhantomPinned</code>? That's the zero-cost marker that implements <code>!Unpin</code>. When the compiler detects self-references, it injects this marker into the future's state.</p>
+<hr />
+<h4>Common Pitfall: Moving a Future</h4>
+<p>The most frequent footgun:</p>
+<pre class="codehilite"><code class="language-rust">let fut = self_referential();
+tokio::pin!(fut); // pins to stack - safe
+
+// This would be UB but compiles without pin:
+// std::mem::replace(&amp;mut fut, other_fut); // moves fut
+</code></pre>
+
+<p><code>tokio::pin!</code> ensures the future stays at one stack address. For heap allocation:</p>
+<pre class="codehilite"><code class="language-rust">let fut = Box::pin(self_referential());
+// Now fut is a Pin&lt;Box&lt;dyn Future&gt;&gt; - safe to move the Box
+</code></pre>
+
+<p>The Box itself can move (it's on the stack), but the future inside the heap allocation stays put.</p>
+<hr />
+<h4>Unsafe Proof: When You Need Raw Access</h4>
+<p>Sometimes you must implement a type that is <code>!Unpin</code>—for example, a lock-free data structure with intrusive linked lists. Here's a minimal self-referential struct:</p>
+<pre class="codehilite"><code class="language-rust">use std::pin::Pin;
+use std::marker::PhantomPinned;
+
+struct SelfReferential {
+    data: i32,
+    pointer: *const i32, // raw pointer - no borrow checker
+    _pin: PhantomPinned,
+}
+
+impl SelfReferential {
+    fn new(data: i32) -&gt; Self {
+        Self {
+            data,
+            pointer: std::ptr::null(),
+            _pin: PhantomPinned,
+        }
+    }
+
+    fn init(self: Pin&lt;&amp;mut Self&gt;) {
+        let this = unsafe { self.get_unchecked_mut() };
+        this.pointer = &amp;this.data as *const i32;
+    }
+
+    fn get_value(self: Pin&lt;&amp;Self&gt;) -&gt; i32 {
+        unsafe { *self.pointer }
+    }
+}
+</code></pre>
+
+<p>Key observations:
+- We use raw pointers (<code>*const i32</code>) because Rust's borrow checker cannot track self-references.
+- <code>init</code> must take <code>Pin&lt;&amp;mut Self&gt;</code> to guarantee no moves after setup.
+- <code>get_value</code> takes <code>Pin&lt;&amp;Self&gt;</code> to ensure the pointer remains valid.</p>
+<p>This pattern shows why <code>Pin</code> exists: to give safe APIs around inherently unsafe constructs.</p>
+<hr />
+<h4>The PinBuilder Pattern (Production-Grade)</h4>
+<p>For complex initialization, use a builder that constructs the pinned value safely:</p>
+<pre class="codehilite"><code class="language-rust">use std::pin::Pin;
+use std::marker::PhantomPinned;
+
+struct RingBuffer {
+    buffer: Vec&lt;u8&gt;,
+    head: usize,
+    tail: usize,
+    _pin: PhantomPinned,
+}
+
+struct RingBufferBuilder {
+    size: usize,
+}
+
+impl RingBufferBuilder {
+    fn new(size: usize) -&gt; Self {
+        Self { size }
+    }
+
+    fn build(self) -&gt; Pin&lt;Box&lt;RingBuffer&gt;&gt; {
+        let buf = RingBuffer {
+            buffer: vec![0; self.size],
+            head: 0,
+            tail: 0,
+            _pin: PhantomPinned,
+        };
+        Box::pin(buf)
+    }
+}
+</code></pre>
+
+<p>The builder ensures the value is pinned before it can be used. This eliminates the possibility of moving after initialization.</p>
+<hr />
+<h4>Safe Pin Projections: The <code>pin-project</code> Crate</h4>
+<p>When you have a struct containing multiple pinned fields, you need projections—borrowing individual fields while maintaining the pin guarantee. The <code>pin-project</code> crate generates safe code for this:</p>
+<pre class="codehilite"><code class="language-rust">use pin_project::pin_project;
+
+#[pin_project]
+struct TwoFutures {
+    #[pin]
+    future_a: Pin&lt;Box&lt;dyn Future&lt;Output = ()&gt;&gt;&gt;,
+    #[pin]
+    future_b: Pin&lt;Box&lt;dyn Future&lt;Output = ()&gt;&gt;&gt;,
+}
+
+impl TwoFutures {
+    fn poll(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;()&gt; {
+        // Safe projections via generated methods
+        let this = self.project();
+        let _ = this.future_a.poll(cx);
+        let _ = this.future_b.poll(cx);
+        Poll::Ready(())
+    }
+}
+</code></pre>
+
+<p>Before <code>pin-project</code>, you'd write unsafe projections:</p>
+<pre class="codehilite"><code class="language-rust">impl TwoFutures {
+    fn poll(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;()&gt; {
+        unsafe {
+            let a = self.map_unchecked_mut(|s| &amp;mut s.future_a);
+            let b = self.map_unchecked_mut(|s| &amp;mut s.future_b);
+            let _ = a.as_mut().poll(cx);
+            let _ = b.as_mut().poll(cx);
+        }
+        Poll::Ready(())
+    }
+}
+</code></pre>
+
+<p>The unsafe version is fragile—if you incorrectly map a field, you break the pin guarantee. <code>pin-project</code> eliminates this risk.</p>
+<hr />
+<h4>The Stack Pin Trap</h4>
+<p><code>tokio::pin!</code> is convenient but has a subtle limitation:</p>
+<pre class="codehilite"><code class="language-rust">async fn fetch_data() -&gt; Vec&lt;u8&gt; {
+    // ... some async work
+}
+
+async fn process() {
+    let fut = fetch_data(); // on stack
+    tokio::pin!(fut);       // pins to stack
+    // This compiles but if you move 'fut' after pinning, it's UB
+    // Safe because 'fut' goes out of scope before moving
+}
+</code></pre>
+
+<p>If you need to pass the future to another function, <code>Box::pin</code> is safer:</p>
+<pre class="codehilite"><code class="language-rust">fn spawn_and_poll(fut: Pin&lt;Box&lt;dyn Future&lt;Output = ()&gt; + Send&gt;&gt;) {
+    tokio::spawn(fut); // moves the Box, not the future
+}
+</code></pre>
+
+<p>Stack-pinned futures cannot be moved—ever. They die when the scope ends. Box-pinned futures can move their heap allocation.</p>
+<hr />
+<h4>Practical Debugging: When Pin Surprises You</h4>
+<p>You encounter a <code>!Unpin</code> error. Steps to resolve:</p>
+<ol>
+<li>
+<p><strong>Identify the self-reference.</strong> Look for local variables that borrow other locals across await points. Refactor to avoid the borrow if possible.</p>
+</li>
+<li>
+<p><strong>Use <code>Box::pin</code>.</strong> Almost always the right answer for production code. The heap allocation cost is negligible compared to the async runtime overhead.</p>
+</li>
+<li>
+<p><strong>Check your trait bounds.</strong> Some runtime operations require <code>Unpin</code>:</p>
+</li>
+</ol>
+<pre class="codehilite"><code class="language-rust">tokio::spawn(async move {
+    // If this future is !Unpin, tokio::spawn won't even compile
+    // because it requires futures to be Unpin
+});
+</code></pre>
+
+<p><code>tokio::spawn</code> actually accepts <code>Box::pin</code>'d futures because <code>Pin&lt;Box&lt;T&gt;&gt;</code> implements <code>Unpin</code>. The Box is movable; the contents stay fixed.</p>
+<hr />
+<h4>The Unsafe Escape Hatch (When You Must)</h4>
+<p>Rarely, you need to convert <code>Pin&lt;&amp;mut T&gt;</code> to <code>&amp;mut T</code>. This is safe only if you know the value is <code>Unpin</code>:</p>
+<pre class="codehilite"><code class="language-rust">fn get_mut_unchecked&lt;T&gt;(pinned: Pin&lt;&amp;mut T&gt;) -&gt; &amp;mut T {
+    // SAFETY: The caller guarantees T is Unpin
+    unsafe { Pin::get_unchecked_mut(pinned) }
+}
+</code></pre>
+
+<p>Never do this unless you're implementing a low-level runtime primitive. For 99% of users, if you need <code>&amp;mut T</code> from <code>Pin</code>, you're designing something wrong.</p>
+<hr />
+<h4>What Pin Does Not Do</h4>
+<ul>
+<li>Pin does not provide atomicity or memory ordering guarantees.</li>
+<li>Pin does not prevent moving the pointer itself—only the pointee.</li>
+<li>Pin does not magically make self-referential code sound—it just forces you to write unsafe in controlled places.</li>
+</ul>
+<hr />
+<h4>The Real Cost of Pin</h4>
+<p>Community wisdom says "just Box::pin everything." That's fine for most apps. But if you're building embedded systems or high-throughput services, consider:</p>
+<ul>
+<li><strong>Box::pin</strong> adds a heap allocation per future.</li>
+<li><strong>Stack pinning</strong> (<code>tokio::pin!</code>) avoids allocation but limits future lifetime.</li>
+<li><strong>Pin&lt;&amp;mut T&gt;</strong> in function signatures prevents moving the argument—useful for resource management.</li>
+</ul>
+<p>For async state machines, Rust's compiler often optimizes away the <code>!Unpin</code> marker when it can prove no self-reference exists. This is why simple async functions compile to <code>Unpin</code> futures.</p>
+<hr />
+<h4>Summary</h4>
+<ul>
+<li><code>Pin</code> enforces a no-move contract for types that need stable addresses.</li>
+<li>Async state machines with self-references are automatically <code>!Unpin</code>.</li>
+<li>Use <code>Box::pin</code> for owned futures, <code>tokio::pin!</code> for temporary stack-pinned values.</li>
+<li>For custom <code>!Unpin</code> types, always provide safe APIs that accept <code>Pin&lt;&amp;mut Self&gt;</code>.</li>
+<li>Use <code>pin-project</code> for safe field projections in complex types.</li>
+</ul>
+<p>Understanding <code>Pin</code> isn't about memorizing the API—it's about internalizing the memory model. Once you see async state machines as self-referential structs, the rest clicks into place.</p>
+<p>Now go build something that doesn't segfault.</p>
+</body>
+</html>
