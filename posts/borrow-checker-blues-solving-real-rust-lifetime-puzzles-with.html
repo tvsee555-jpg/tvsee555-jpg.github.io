@@ -28,19 +28,19 @@
 <p>The key insight: <strong>lifetime errors are almost never about lifetimes themselves.</strong> They surface as lifetime errors, but the root cause is usually a design that doesn’t match Rust’s ownership model. You’re fighting the language because you’re thinking in GC-mode.</p>
 <h2>Anti-Pattern 1: The “Return a Reference From a Container” Trap</h2>
 <p><strong>Pattern:</strong> You write a function that takes a reference to a collection and returns a reference to an element.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// BAD: Self-referential structure anti-pattern</span>
-<span class="k">fn</span> <span class="nf">get_first</span><span class="o">&lt;&#39;</span><span class="na">a</span><span class="o">&gt;</span><span class="p">(</span><span class="n">strings</span>: <span class="kp">&amp;</span><span class="o">&#39;</span><span class="na">a</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kp">&amp;</span><span class="o">&#39;</span><span class="na">a</span> <span class="kt">str</span> <span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="o">&amp;</span><span class="n">strings</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">..</span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">// BAD: Self-referential structure anti-pattern
+fn get_first&lt;'a&gt;(strings: &amp;'a Vec&lt;String&gt;) -&gt; &amp;'a str {
+    &amp;strings[0][..]
+}
+</code></pre>
 
 <p>This compiles. Fine. The problem comes when you try to build a struct that holds both the container and a cached reference.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// DO NOT WRITE THIS</span>
-<span class="k">struct</span> <span class="nc">Cache</span><span class="o">&lt;&#39;</span><span class="na">a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">source</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">cached</span>: <span class="nb">Option</span><span class="o">&lt;&amp;&#39;</span><span class="na">a</span><span class="w"> </span><span class="kt">str</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">// DO NOT WRITE THIS
+struct Cache&lt;'a&gt; {
+    source: Vec&lt;String&gt;,
+    cached: Option&lt;&amp;'a str&gt;,
+}
+</code></pre>
 
 <p>Now you can’t add to <code>source</code> because <code>cached</code> borrows it. You can’t mutate <code>cached</code> because you need a mutable borrow on <code>self</code>. You’ve created a self-referential struct, which Rust explicitly forbids without <code>unsafe</code>.</p>
 <p><strong>Why it fails:</strong> The borrow checker treats the struct as having an invariant lifetime <code>'a</code> tied to the reference. But <code>source</code> is owned. When you mutate <code>source</code>, you invalidate <code>cached</code>, but Rust can’t track that because the reference is outside the borrow system for <code>source</code>’s memory.</p>
@@ -48,46 +48,46 @@
 - Option A: Make the struct own everything. Store indices instead of references.
 - Option B: Use <code>Rc&lt;RefCell&lt;&gt;&gt;</code> for interior mutability if you truly need shared mutation.
 - Option C: Recompute the cached value on access instead of storing it.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// OWNING version - no lifetime headaches</span>
-<span class="k">struct</span> <span class="nc">CacheOwning</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">source</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">String</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">cached_index</span>: <span class="nb">Option</span><span class="o">&lt;</span><span class="kt">usize</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<pre class="codehilite"><code class="language-rust">// OWNING version - no lifetime headaches
+struct CacheOwning {
+    source: Vec&lt;String&gt;,
+    cached_index: Option&lt;usize&gt;,
+}
 
-<span class="k">impl</span><span class="w"> </span><span class="n">CacheOwning</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">fn</span> <span class="nf">get_cached</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;&amp;</span><span class="kt">str</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">cached_index</span><span class="w"></span>
-<span class="w">            </span><span class="p">.</span><span class="n">and_then</span><span class="p">(</span><span class="o">|</span><span class="n">i</span><span class="o">|</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">source</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">).</span><span class="n">map</span><span class="p">(</span><span class="o">|</span><span class="n">s</span><span class="o">|</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">as_str</span><span class="p">()))</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+impl CacheOwning {
+    fn get_cached(&amp;self) -&gt; Option&lt;&amp;str&gt; {
+        self.cached_index
+            .and_then(|i| self.source.get(i).map(|s| s.as_str()))
+    }
+}
+</code></pre>
 
 <p><strong>Tradeoff:</strong> You pay the cost of recomputing or index validation. But you eliminate the lifetime constraint entirely. In practice, lookups from a <code>Vec</code> are fast enough that the savings from a stored reference are negligible unless you’re doing millions per second.</p>
 <h2>Anti-Pattern 2: The Mutex That Holds a Reference</h2>
 <p><strong>Pattern:</strong> You have a shared resource behind a <code>Mutex</code> or <code>RwLock</code>, and you want to return a reference to data inside the lock guard.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// COMMON MISTAKE</span>
-<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">sync</span>::<span class="p">{</span><span class="n">Arc</span><span class="p">,</span><span class="w"> </span><span class="n">Mutex</span><span class="p">};</span><span class="w"></span>
+<pre class="codehilite"><code class="language-rust">// COMMON MISTAKE
+use std::sync::{Arc, Mutex};
 
-<span class="k">struct</span> <span class="nc">Database</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">data</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Record</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+struct Database {
+    data: Vec&lt;Record&gt;,
+}
 
-<span class="k">fn</span> <span class="nf">get_record</span><span class="p">(</span><span class="n">db</span>: <span class="kp">&amp;</span><span class="nc">Arc</span><span class="o">&lt;</span><span class="n">Mutex</span><span class="o">&lt;</span><span class="n">Database</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span>: <span class="kt">usize</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kp">&amp;</span><span class="nc">Record</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">lock</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// ERROR: cannot return reference to local variable `guard`</span>
-<span class="w">    </span><span class="o">&amp;</span><span class="n">guard</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+fn get_record(db: &amp;Arc&lt;Mutex&lt;Database&gt;&gt;, id: usize) -&gt; &amp;Record {
+    let guard = db.lock().unwrap();
+    // ERROR: cannot return reference to local variable `guard`
+    &amp;guard.data[id]
+}
+</code></pre>
 
 <p>This fails because <code>guard</code> is a local variable that drops at the end of the function. The reference would dangle.</p>
 <p><strong>Why it fails:</strong> The <code>MutexGuard</code> owns the data temporarily. Returning a reference exposes the interior of the guard, but the guard must live at least as long as the reference. You can’t move the guard out (it’s not <code>Copy</code>), and you can’t extend its lifetime.</p>
 <p><strong>Real refactoring:</strong>
 The only clean solution: clone the data out, or return it by value.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">fn</span> <span class="nf">get_record_clone</span><span class="p">(</span><span class="n">db</span>: <span class="kp">&amp;</span><span class="nc">Arc</span><span class="o">&lt;</span><span class="n">Mutex</span><span class="o">&lt;</span><span class="n">Database</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span>: <span class="kt">usize</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Record</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">lock</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="n">guard</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="n">cloned</span><span class="p">()</span><span class="w"> </span><span class="c1">// clone out</span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">fn get_record_clone(db: &amp;Arc&lt;Mutex&lt;Database&gt;&gt;, id: usize) -&gt; Option&lt;Record&gt; {
+    let guard = db.lock().unwrap();
+    guard.data.get(id).cloned() // clone out
+}
+</code></pre>
 
 <p><strong>But cloning is expensive!</strong> Yes. If the data is large, consider:
 - Return an <code>Arc&lt;Record&gt;</code> if the data is shareable and read-heavy.
@@ -96,34 +96,34 @@ The only clean solution: clone the data out, or return it by value.</p>
 <p><strong>Tradeoff:</strong> You lose reference semantics. But you gain composability—this function is now a pure function with no borrow constraints. It can be called from multithreaded code without lifetime anxiety.</p>
 <h2>Anti-Pattern 3: The Iterator That Borrows Itself</h2>
 <p><strong>Pattern:</strong> You write a custom iterator that holds a mutable reference to the underlying collection.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">RefIter</span><span class="o">&lt;&#39;</span><span class="na">a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">data</span>: <span class="kp">&amp;</span><span class="o">&#39;</span><span class="na">a</span> <span class="p">[</span><span class="kt">u32</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="n">pos</span>: <span class="kt">usize</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<pre class="codehilite"><code class="language-rust">struct RefIter&lt;'a&gt; {
+    data: &amp;'a [u32],
+    pos: usize,
+}
 
-<span class="k">impl</span><span class="o">&lt;&#39;</span><span class="na">a</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">Iterator</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">RefIter</span><span class="o">&lt;&#39;</span><span class="na">a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span> <span class="nc">Item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;&#39;</span><span class="na">a</span><span class="w"> </span><span class="kt">u32</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;</span><span class="bp">Self</span>::<span class="n">Item</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">pos</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">len</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">pos</span><span class="p">];</span><span class="w"></span>
-<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">pos</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="nb">Some</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nb">None</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+impl&lt;'a&gt; Iterator for RefIter&lt;'a&gt; {
+    type Item = &amp;'a u32;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        if self.pos &lt; self.data.len() {
+            let item = &amp;self.data[self.pos];
+            self.pos += 1;
+            Some(item)
+        } else {
+            None
+        }
+    }
+}
+</code></pre>
 
 <p>This works, but try to mix it with other mutable operations on the collection.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">fn</span> <span class="nf">example</span><span class="p">(</span><span class="n">data</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="nb">Vec</span><span class="o">&lt;</span><span class="kt">u32</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RefIter</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">data</span>: <span class="kp">&amp;</span><span class="nc">data</span><span class="p">[</span><span class="o">..</span><span class="p">],</span><span class="w"> </span><span class="n">pos</span>: <span class="mi">0</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="c1">// ERROR: cannot borrow `data` as mutable because it is also borrowed as immutable</span>
-<span class="w">        </span><span class="n">data</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">item</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">fn example(data: &amp;mut Vec&lt;u32&gt;) {
+    let iter = RefIter { data: &amp;data[..], pos: 0 };
+    for item in iter {
+        // ERROR: cannot borrow `data` as mutable because it is also borrowed as immutable
+        data.push(*item + 1);
+    }
+}
+</code></pre>
 
 <p><strong>Why it fails:</strong> The iterator holds an immutable borrow on <code>data</code>. Rust prevents mutation while the borrow exists, even though the iterator only uses the reference for reading.</p>
 <p><strong>Real refactoring:</strong>
@@ -133,27 +133,27 @@ Use <code>unsafe</code>? No. Change the pattern.</p>
 <li>Option B: Collect the references into a <code>Vec</code> first, then mutate.</li>
 <li>Option C: Use <code>split_at_checked</code> or <code>&amp;mut</code> iteration that yields <code>&amp;mut</code> items, but that changes the semantics.</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="c1">// INDEX-based iteration - no aliasing</span>
-<span class="k">fn</span> <span class="nf">example_fixed</span><span class="p">(</span><span class="n">data</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="nb">Vec</span><span class="o">&lt;</span><span class="kt">u32</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">indices</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="kt">usize</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="n">data</span><span class="p">.</span><span class="n">len</span><span class="p">()).</span><span class="n">collect</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">indices</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="c1">// copy</span>
-<span class="w">        </span><span class="n">data</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">item</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">// INDEX-based iteration - no aliasing
+fn example_fixed(data: &amp;mut Vec&lt;u32&gt;) {
+    let indices: Vec&lt;usize&gt; = (0..data.len()).collect();
+    for i in indices {
+        let item = data[i]; // copy
+        data.push(item + 1);
+    }
+}
+</code></pre>
 
 <p><strong>Tradeoff:</strong> You allocate a <code>Vec</code> of indices. For small collections, fine. For large ones, consider using <code>unsafe</code> carefully (but only if you’ve profiled). In most cases, the index allocation is trivial compared to the actual work.</p>
 <h2>Anti-Pattern 4: The “Temporary Reference” in Function Calls</h2>
 <p><strong>Pattern:</strong> You chain method calls transparently, but the borrow checker catches you.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">fn</span> <span class="nf">update_counter</span><span class="p">(</span><span class="n">db</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="n">Database</span><span class="p">,</span><span class="w"> </span><span class="n">key</span>: <span class="kp">&amp;</span><span class="kt">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">entries</span><span class="p">.</span><span class="n">get_mut</span><span class="p">(</span><span class="n">key</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"> </span><span class="c1">// &amp;mut</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">old</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="p">.</span><span class="n">counter</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// ERROR: cannot borrow `db.entries` as immutable because it is also borrowed as mutable</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">entries</span><span class="p">.</span><span class="n">len</span><span class="p">();</span><span class="w"> </span><span class="c1">// tries to borrow immutably</span>
-<span class="w">    </span><span class="n">entry</span><span class="p">.</span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">old</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">fn update_counter(db: &amp;mut Database, key: &amp;str) {
+    let entry = db.entries.get_mut(key).unwrap(); // &amp;mut
+    let old = entry.counter;
+    // ERROR: cannot borrow `db.entries` as immutable because it is also borrowed as mutable
+    let total = db.entries.len(); // tries to borrow immutably
+    entry.counter = old + 1;
+}
+</code></pre>
 
 <p>This is the most common daily headache. The borrow from <code>get_mut</code> lasts until the last use of <code>entry</code>. But <code>db.entries.len()</code> tries to borrow <code>db.entries</code> immutably while the mutable borrow is still active.</p>
 <p><strong>Why it fails:</strong> The borrow checker sees overlapping borrows: <code>entry</code> is a mutable reference into <code>db.entries</code>, and <code>db.entries.len()</code> is an immutable reference to the same data. Even if <code>entry</code> and <code>len()</code> operate on different fields, Rust’s borrow checker doesn’t track that at a fine granularity for <code>&amp;mut</code>—it assumes the mutable borrow covers the whole struct.</p>
@@ -161,13 +161,13 @@ Use <code>unsafe</code>? No. Change the pattern.</p>
 - Option A: Reorder the statements so the mutable borrow ends before the immutable borrow.
 - Option B: Use a temporary copy.
 - Option C: Use split borrowing (e.g., <code>&amp;db.entries.len()</code> is fine if <code>entry</code> was obtained from a different struct field).</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// Fixed version: extract immutable data first</span>
-<span class="k">fn</span> <span class="nf">update_counter_fixed</span><span class="p">(</span><span class="n">db</span>: <span class="kp">&amp;</span><span class="nc">mut</span><span class="w"> </span><span class="n">Database</span><span class="p">,</span><span class="w"> </span><span class="n">key</span>: <span class="kp">&amp;</span><span class="kt">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">entries</span><span class="p">.</span><span class="n">len</span><span class="p">();</span><span class="w"> </span><span class="c1">// immutable borrow first</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db</span><span class="p">.</span><span class="n">entries</span><span class="p">.</span><span class="n">get_mut</span><span class="p">(</span><span class="n">key</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="n">entry</span><span class="p">.</span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="p">;</span><span class="w"> </span><span class="c1">// use the copy</span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">// Fixed version: extract immutable data first
+fn update_counter_fixed(db: &amp;mut Database, key: &amp;str) {
+    let total = db.entries.len(); // immutable borrow first
+    let entry = db.entries.get_mut(key).unwrap();
+    entry.counter = total as u64; // use the copy
+}
+</code></pre>
 
 <p><strong>Tradeoff:</strong> You may need to restructure logic slightly. Sometimes you need to clone or copy a value to break the borrow chain. That’s okay—clones of primitives are free. Clones of large structs are a signal that you might need a different design.</p>
 <h2>The Master Refactoring Flow</h2>
@@ -181,37 +181,37 @@ Use <code>unsafe</code>? No. Change the pattern.</p>
 </ol>
 <h2>Real-World Case: Building a LRU Cache Without Gloom</h2>
 <p>Let’s apply this to a realistic problem: an LRU cache that stores entries behind <code>Rc&lt;RefCell&lt;&gt;&gt;</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">rc</span>::<span class="n">Rc</span><span class="p">;</span><span class="w"></span>
-<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">cell</span>::<span class="n">RefCell</span><span class="p">;</span><span class="w"></span>
-<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">collections</span>::<span class="n">HashMap</span><span class="p">;</span><span class="w"></span>
+<pre class="codehilite"><code class="language-rust">use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
 
-<span class="k">struct</span> <span class="nc">LruCache</span><span class="o">&lt;</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">map</span>: <span class="nc">HashMap</span><span class="o">&lt;</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">Rc</span><span class="o">&lt;</span><span class="n">RefCell</span><span class="o">&lt;</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">capacity</span>: <span class="kt">usize</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">order</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">K</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+struct LruCache&lt;K, V&gt; {
+    map: HashMap&lt;K, Rc&lt;RefCell&lt;Entry&lt;V&gt;&gt;&gt;&gt;,
+    capacity: usize,
+    order: Vec&lt;K&gt;,
+}
 
-<span class="k">struct</span> <span class="nc">Entry</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">value</span>: <span class="nc">V</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// ... metadata like access time</span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+struct Entry&lt;V&gt; {
+    value: V,
+    // ... metadata like access time
+}
+</code></pre>
 
 <p>Here, <code>Rc</code> allows sharing the entry across the cache and external references. <code>RefCell</code> gives interior mutability so we can update the access time without holding a mutable borrow on the cache.</p>
 <p>The anti-pattern would be trying to return a reference to the value:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">fn</span> <span class="nf">get</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">key</span>: <span class="kp">&amp;</span><span class="nc">K</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;&amp;</span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="bp">self</span><span class="p">.</span><span class="n">map</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">).</span><span class="n">map</span><span class="p">(</span><span class="o">|</span><span class="n">entry</span><span class="o">|</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="c1">// ERROR: cannot return reference to temporary</span>
-<span class="w">        </span><span class="o">&amp;</span><span class="n">entry</span><span class="p">.</span><span class="n">borrow</span><span class="p">().</span><span class="n">value</span><span class="w"></span>
-<span class="w">    </span><span class="p">})</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">fn get(&amp;self, key: &amp;K) -&gt; Option&lt;&amp;V&gt; {
+    self.map.get(key).map(|entry| {
+        // ERROR: cannot return reference to temporary
+        &amp;entry.borrow().value
+    })
+}
+</code></pre>
 
 <p><strong>Refactoring:</strong> Return an <code>Rc</code> to the entry, or clone the value.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">fn</span> <span class="nf">get_rc</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">key</span>: <span class="kp">&amp;</span><span class="nc">K</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Rc</span><span class="o">&lt;</span><span class="n">RefCell</span><span class="o">&lt;</span><span class="n">Entry</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="bp">self</span><span class="p">.</span><span class="n">map</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">).</span><span class="n">cloned</span><span class="p">()</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
+<pre class="codehilite"><code class="language-rust">fn get_rc(&amp;self, key: &amp;K) -&gt; Option&lt;Rc&lt;RefCell&lt;Entry&lt;V&gt;&gt;&gt;&gt; {
+    self.map.get(key).cloned()
+}
+</code></pre>
 
 <p>Now the caller owns a reference-counted handle. They can read or mutate the entry as needed, without holding the cache’s lock. The cache can evict entries safely because <code>Rc</code> ensures the entry lives as long as needed.</p>
 <p><strong>Tradeoff:</strong> External holders can pin entries in memory, defeating eviction. But for a cache that allows external references, that’s by design. If you need strict eviction, you’d use <code>Weak</code> references and upgrade.</p>
